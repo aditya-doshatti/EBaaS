@@ -18,18 +18,18 @@ class PrepareApiFiles:
                                                     --database ' + self.database+ ' \
                                                     --user ' + self.username+' \
                                                     --pass ' + self.password+ ' --port 3306 \
-                                                    -o ../'+self.project+'/models'
+                                                    -o ./static/'+self.project+'/models'
 
-        command_to_get_express_structure = 'express ../'+self.project
-        command_to_create_config_folder = 'mkdir ..\\'+self.project+'\\config'
+        command_to_get_express_structure = 'express ./static/'+self.project
+        command_to_create_config_folder = 'mkdir .\\static\\'+self.project+'\\config'
         os.system(command_to_get_express_structure)
         os.system(command_to_create_config_folder)
         os.system(command_to_get_model_file)
-        os.remove("../"+self.project+"/app.js")
-        os.remove("../"+self.project+"/routes/index.js")
-        os.remove("../"+self.project+"/routes/users.js")
-        shutil.rmtree("../"+self.project+"/bin")
-        shutil.rmtree("../"+self.project+"/views")
+        os.remove("./static/"+self.project+"/app.js")
+        os.remove("./static/"+self.project+"/routes/index.js")
+        os.remove("./static/"+self.project+"/routes/users.js")
+        shutil.rmtree("./static/"+self.project+"/bin")
+        shutil.rmtree("./static/"+self.project+"/views")
         # Editing config.json
         lines = open('./config/configSkeleton.json', 'r').readlines()
         lines[2] = '\t\"DB_HOSTNAME\" : \"' + self.hostname + '\", \n'
@@ -37,11 +37,11 @@ class PrepareApiFiles:
         lines[4] = '\t\"DB_PASSWORD\" : \"' + self.password + '\", \n'
         lines[5] = '\t\"DB_PORT\" : \"3306\", \n'
         lines[6] = '\t\"DB_NAME\" : \"' + self.database + '\" \n'
-        out = open('../'+self.project+'/config/config.json', 'w')
+        out = open('./static/'+self.project+'/config/config.json', 'w')
         out.writelines(lines)
         out.close()
 
-        shutil.copyfile('connection.js','../'+self.project+'/connection.js')
+        shutil.copyfile('connection.js','./static/'+self.project+'/connection.js')
 
 
 
@@ -61,12 +61,12 @@ class PrepareApiFiles:
 
                 # creating index.js in app folder.
                 contents = open('index.js','r').readlines()
-                indexFile = open('../'+self.project+'/index.js','w')
+                indexFile = open('./static/'+self.project+'/index.js','w')
                 indexFile.write("".join(contents))
                 indexFile.close()
                 # package.json in app folder
                 contents = open('package.json','r').readlines()
-                indexFile = open('../'+self.project+'/package.json','w')
+                indexFile = open('./static/'+self.project+'/package.json','w')
                 indexFile.write("".join(contents))
                 indexFile.close()
 
@@ -80,16 +80,16 @@ class PrepareApiFiles:
                     lines[5] = "var entity = Conn.import(__dirname + '/../models/"+r[0]+".js'); \n"
                     lines[95] = "\t\t\t\t\t{ where:{ "+r[1]+": id} },\n"
                     lines[122] = "\t\tentity.destroy({ where:{ "+r[1]+": id} },{ raw: true })\n"    
-                    out = open('../'+self.project+'/routes/'+r[0]+'.js', 'w')
+                    out = open('./static/'+self.project+'/routes/'+r[0]+'.js', 'w')
                     out.writelines(lines)
                     out.close()
                     
 
-                    contents = open('../'+self.project+'/index.js','r').readlines()
+                    contents = open('./static/'+self.project+'/index.js','r').readlines()
                     contents.insert(6,"var "+r[0]+" = require('./routes/"+r[0]+".js')\n")
                     contents.insert(len(contents)-3,'app.use("/'+r[0]+'",'+r[0]+')\n')
 
-                    indexFile = open('../'+self.project+'/index.js','w')
+                    indexFile = open('./static/'+self.project+'/index.js','w')
                     contents = "".join(contents)
                     indexFile.write(contents)
                     indexFile.close()
@@ -107,11 +107,11 @@ class PrepareApiFiles:
                     skeletonContents[57] = "router.delete('/"+r[1]+"/:uniqueKey', function (req, res, next) {\n"
                     skeletonContents[60] = "\t\tentity.destroy({where:{"+r[1]+":uniqueKey}},{ raw: true })\n"
 
-                    contents = open('../'+self.project+'/routes/'+r[0]+'.js','r').readlines()
+                    contents = open('./static/'+self.project+'/routes/'+r[0]+'.js','r').readlines()
                     contents.insert(len(contents)-2,"".join(skeletonContents))
                     contents.insert(len(contents)-2,"\n")
 
-                    file = open('../'+self.project+'/routes/'+r[0]+'.js','w')
+                    file = open('./static/'+self.project+'/routes/'+r[0]+'.js','w')
                     contents = "".join(contents)
                     file.write(contents)
                     file.close()
@@ -129,11 +129,11 @@ class PrepareApiFiles:
                     skeletonContents[29] = "\tvar childEntity = Conn.import(__dirname + `/../models/"+row[1]+".js`);\n"
                     skeletonContents[32] = "\tbody['"+row[2]+"'] = id\n"
 
-                    contents = open('../'+self.project+'/routes/'+row[3]+'.js','r').readlines()
+                    contents = open('./static/'+self.project+'/routes/'+row[3]+'.js','r').readlines()
                     contents.insert(len(contents)-2,"".join(skeletonContents))
                     contents.insert(len(contents)-2,"\n")
 
-                    file = open('../'+self.project+'/routes/'+row[3]+'.js','w')
+                    file = open('./static/'+self.project+'/routes/'+row[3]+'.js','w')
                     contents = "".join(contents)
                     file.write(contents)
                     file.close()

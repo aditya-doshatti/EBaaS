@@ -36,7 +36,7 @@ class PrepareZipFolder:
             print(file_name)
 
         # writing files to a zipfile
-        with ZipFile('../'+project+'.zip', 'w') as zip:
+        with ZipFile('./static/'+project+'.zip', 'w') as zip:
             # writing each file one by one
             for file in file_paths:
                 zip.write(file)

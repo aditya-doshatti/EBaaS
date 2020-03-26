@@ -1,0 +1,317 @@
+<!doctype html>
+<html class="no-js" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>srtdash - ICO Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/png" href="assets/images/icon/favicon.ico">
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/font-awesome.min.css">
+    <link rel="stylesheet" href="assets/css/themify-icons.css">
+    <link rel="stylesheet" href="assets/css/metisMenu.css">
+    <link rel="stylesheet" href="assets/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="assets/css/slicknav.min.css">
+    <!-- amchart css -->
+    <link rel="stylesheet" href="https://www.amcharts.com/lib/3/plugins/export/export.css" type="text/css" media="all" />
+    <!-- others css -->
+    <link rel="stylesheet" href="assets/css/typography.css">
+    <link rel="stylesheet" href="assets/css/default-css.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/responsive.css">
+    <!-- modernizr css -->
+    <script src="assets/js/vendor/modernizr-2.8.3.min.js"></script>
+</head>
+
+<body>
+    <!--[if lt IE 8]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+    <!-- preloader area start -->
+    <div id="preloader">
+        <div class="loader"></div>
+    </div>
+    <!-- preloader area end -->
+    <!-- page container area start -->
+    <div class="page-container">
+        <!-- sidebar menu area start -->
+        <div class="sidebar-menu">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <a href="index.html"><img src="assets/images/icon/logo.png" alt="logo"></a>
+                </div>
+            </div>
+            <div class="main-menu">
+                <div class="menu-inner">
+                    <nav>
+                        <ul class="metismenu" id="menu">
+                            <li>
+                                <a href="index.html" ><i class="ti-home"></i><span>Home</span></a>
+                            </li>
+                            <li>
+                                <a href="viewdatabase.html"><i class="fa fa-database"></i><span>View Database</span></a>
+                            </li>
+                            <li class="active">
+                                <a href="connecttodatabase.html"><i class="fa fa-connectdevelop"></i><span>Connect to Database</span></a>
+                            </li>
+                            <li>
+                                <a href="javascript:void(0)" aria-expanded="true"><i class="fa fa-server"></i><span>Modify Database</span></a>
+                                <ul class="collapse">
+                                    <li><a href="addtable.html">Add new table</a></li>
+                                    <li><a href="addcolumn.html">add new column</a></li>
+                                    <li><a href="modifycolumn.html">modify a column</a></li>
+                                    <li><a href="createrelation.html">create relationships</a></li>
+                                    <li><a href="deletecolumn.html">delete column</a></li>
+                                    <li><a href="deletetable.html">delete table</a></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="viewlogs.html"><i class="fa fa-file-text"></i><span>View Logs</span></a>
+                            </li>
+                            <li>
+                                <a href="securitysettings.html"><i class="ti-settings"></i><span>Security Settings</span></a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+        <!-- sidebar menu area end -->
+        <!-- main content area start -->
+        <div class="main-content">
+            <!-- header area start -->
+            <div class="header-area">
+                <div class="row align-items-center">
+                    <!-- nav and search button -->
+                    <div class="col-md-6 col-sm-8 clearfix">
+                        <div class="nav-btn pull-left">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                    </div>
+                </div>
+            
+            <!-- header area end -->
+            <!-- page title area start -->
+            <div class="page-title-area">
+                <div class="row align-items-center">
+                    <div class="col-sm-6">
+                        <div class="breadcrumbs-area clearfix">
+                            <h4 class="page-title pull-left">Connect to Database</h4>
+                            <ul class="breadcrumbs pull-left">
+                                <li><a href="index.html">Home</a></li>
+                                <li><span>Connect to Database</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 clearfix">
+                        <div class="user-profile pull-right">
+                            <img class="avatar user-thumb" src="assets/images/author/avatar.png" alt="avatar">
+                            <h4 class="user-name dropdown-toggle" data-toggle="dropdown">***Devashish Nyati***<i class="fa fa-angle-down"></i></h4>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="#">Settings</a>
+                                <a class="dropdown-item" href="#">Log Out</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- page title area end -->
+            <div class="main-content-inner">
+
+                <div class="row">
+                    <div class="col-lg-12 mt-5">
+                        <div class="card">
+                            <div class="card-body">
+                                <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" id="pills-create-tab" data-toggle="pill" href="#pills-create" role="tab" aria-controls="pills-create" aria-selected="true">Create a New Database</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="pills-connect-tab" data-toggle="pill" href="#pills-connect" role="tab" aria-controls="pills-connect" aria-selected="false">Connect to Existing Database</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="pills-excel-tab" data-toggle="pill" href="#pills-excel" role="tab" aria-controls="pills-excel" aria-selected="false">Upload Excel</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="pills-sql-tab" data-toggle="pill" href="#pills-sql" role="tab" aria-controls="pills-sql" aria-selected="false">Upload SQL</a>
+                                    </li>
+                                </ul>
+                                <div class="tab-content" id="pills-tabContent">
+                                    <div class="tab-pane fade show active" id="pills-create" role="tabpanel" aria-labelledby="pills-create-tab">
+                                        <form>
+                                            <div class="form-group">
+                                                <label for="example-text-input" class="col-form-label">Database Address</label>
+                                                <input class="form-control" type="text" placeholder="***127.0.0.1***" id="example-text-input">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="example-text-input" class="col-form-label">Database Port</label>
+                                                <input class="form-control" type="text" placeholder="***3000***" id="example-text-input">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="example-text-input" class="col-form-label">Username</label>
+                                                <input class="form-control" type="text" placeholder="***root***" id="username">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="inputPassword" class="">Password</label>
+                                                <input type="password" class="form-control" id="inputPassword" placeholder="Password">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="example-text-input" class="col-form-label">Database Name</label>
+                                                <input class="form-control" type="text" placeholder="***emp***" id="username">
+                                            </div>
+                                            <button type="button" class="btn btn-light mt-4 pr-4 pl-4">Cancel</button>
+                                            <button type="submit" class="btn btn-primary mt-4 pr-4 pl-4">Create</button>
+                                        </form>
+                                    </div>
+                                    <div class="tab-pane fade" id="pills-connect" role="tabpanel" aria-labelledby="pills-connect-tab">
+                                        <form>
+                                            <div class="form-group">
+                                                <label for="example-text-input" class="col-form-label">Database Address</label>
+                                                <input class="form-control" type="text" placeholder="***127.0.0.1***" id="example-text-input">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="example-text-input" class="col-form-label">Database Port</label>
+                                                <input class="form-control" type="text" placeholder="***3000***" id="example-text-input">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="example-text-input" class="col-form-label">Username</label>
+                                                <input class="form-control" type="text" placeholder="***root***" id="username">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="inputPassword" class="">Password</label>
+                                                <input type="password" class="form-control" id="inputPassword" placeholder="Password">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="example-text-input" class="col-form-label">Database Name</label>
+                                                <input class="form-control" type="text" placeholder="***emp***" id="username">
+                                            </div>
+                                            <button type="button" class="btn btn-light mt-4 pr-4 pl-4">Cancel</button>
+                                            <button type="submit" class="btn btn-primary mt-4 pr-4 pl-4">Connect</button>
+                                        </form>
+                                    </div>
+                                    <div class="tab-pane fade" id="pills-excel" role="tabpanel" aria-labelledby="pills-excel-tab">
+                                        <form action="#">
+                                            <div class="form-group">
+                                                <label for="example-text-input" class="col-form-label">Database Address</label>
+                                                <input class="form-control" type="text" placeholder="***127.0.0.1***" id="example-text-input">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="example-text-input" class="col-form-label">Database Port</label>
+                                                <input class="form-control" type="text" placeholder="***3000***" id="example-text-input">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="example-text-input" class="col-form-label">Username</label>
+                                                <input class="form-control" type="text" placeholder="***root***" id="username">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="inputPassword" class="">Password</label>
+                                                <input type="password" class="form-control" id="inputPassword" placeholder="Password">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="example-text-input" class="col-form-label">Database Name</label>
+                                                <input class="form-control" type="text" placeholder="***emp***" id="username">
+                                            </div>
+                                            <div class="input-group">
+                                                <div class="custom-file">
+                                                    <input type="file" accept=".xls,.xlsx" class="custom-file-input" id="inputGroupFile04">
+                                                    <label class="custom-file-label" for="inputGroupFile04">Choose file</label>
+                                                </div>
+                                                <div class="input-group-append">
+                                                    <button class="btn btn-primary" type="button">Upload</button>
+                                                </div>
+                                            </div>
+                                            <button type="button" class="btn btn-light mt-4 pr-4 pl-4">Cancel</button>
+                                            <button type="submit" class="btn btn-primary mt-4 pr-4 pl-4">Create</button>
+                                        </form>
+                                    </div>
+                                    <div class="tab-pane fade" id="pills-sql" role="tabpanel" aria-labelledby="pills-sql-tab">
+                                        <form action="#">
+                                            <div class="form-group">
+                                                <label for="example-text-input" class="col-form-label">Database Address</label>
+                                                <input class="form-control" type="text" placeholder="***127.0.0.1***" id="example-text-input">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="example-text-input" class="col-form-label">Database Port</label>
+                                                <input class="form-control" type="text" placeholder="***3000***" id="example-text-input">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="example-text-input" class="col-form-label">Username</label>
+                                                <input class="form-control" type="text" placeholder="***root***" id="username">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="inputPassword" class="">Password</label>
+                                                <input type="password" class="form-control" id="inputPassword" placeholder="Password">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="example-text-input" class="col-form-label">Database Name</label>
+                                                <input class="form-control" type="text" placeholder="***emp***" id="username">
+                                            </div>
+                                            <div class="input-group">
+                                                <div class="custom-file">
+                                                    <input type="file" accept=".sql" class="custom-file-input" id="inputGroupFile04">
+                                                    <label class="custom-file-label" for="inputGroupFile04">Choose file</label>
+                                                </div>
+                                                <div class="input-group-append">
+                                                    <button class="btn btn-primary" type="button">Upload</button>
+                                                </div>
+                                            </div>
+                                            <button type="button" class="btn btn-light mt-4 pr-4 pl-4">Cancel</button>
+                                            <button type="submit" class="btn btn-primary mt-4 pr-4 pl-4">Create</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- row area start-->
+            </div>
+        </div>
+        </div>
+        <!-- main content area end -->
+        <!-- footer area start-->
+        <footer>
+            <div class="footer-area">
+                <p>EBaaS</p>
+                <!-- <p>© Copyright 2018. All right reserved. Template by <a href="https://colorlib.com/wp/">Colorlib</a>.</p> -->
+            </div>
+        </footer>
+        <!-- footer area end-->
+    </div>
+    <!-- page container area end -->
+    <!-- offset area start -->
+    
+    <!-- offset area end -->
+    <!-- jquery latest version -->
+    <script src="assets/js/vendor/jquery-2.2.4.min.js"></script>
+    <!-- bootstrap 4 js -->
+    <script src="assets/js/popper.min.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
+    <script src="assets/js/owl.carousel.min.js"></script>
+    <script src="assets/js/metisMenu.min.js"></script>
+    <script src="assets/js/jquery.slimscroll.min.js"></script>
+    <script src="assets/js/jquery.slicknav.min.js"></script>
+
+    <!-- start chart js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
+    <!-- start highcharts js -->
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <!-- start zingchart js -->
+    <script src="https://cdn.zingchart.com/zingchart.min.js"></script>
+    <script>
+    zingchart.MODULESDIR = "https://cdn.zingchart.com/modules/";
+    ZC.LICENSE = ["569d52cefae586f634c54f86dc99e6a9", "ee6b7db5b51705a13dc2339db3edaf6d"];
+    </script>
+    <!-- all line chart activation -->
+    <script src="assets/js/line-chart.js"></script>
+    <!-- all pie chart -->
+    <script src="assets/js/pie-chart.js"></script>
+    <!-- others plugins -->
+    <script src="assets/js/plugins.js"></script>
+    <script src="assets/js/scripts.js"></script>
+</body>
+
+</html>

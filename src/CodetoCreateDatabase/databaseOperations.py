@@ -1,8 +1,8 @@
 import mysql.connector
 from flask import Flask, request, jsonify
+from mysql.connector import Error
 
 app = Flask(__name__)
-app.run()
 
 datatypes = {
     "String" : "VARCHAR(255)",
@@ -39,47 +39,79 @@ def connectToServer():
     try:
         mycursor = databaseCursor(requestBody)
         return "Connection Successful"
-    except e:
-        return "Got Exception"  + e
+    except:
+        return "Got Exception"
 
 @app.route('/connectToDatabase', methods=['POST'])
 def connectToDatabase():
     data = request.json
-    requestBody = jsonify(data)
+    # requestBody = jsonify(data)
+    # print("Json body: ",requestBody,data)
     try:
-        cursor = databaseCursor(requestBody)
+        cursor = databaseCursor(data)
         return "Connection Successful"
-    except e:
-        return "Got Exception"  + e
+    except Error as e:
+        return "Got Exception" + e
 
 @app.route('/createDatabase', methods=['POST'])
 def createDatase():
     data = request.json
-    requestBody = jsonify(data)
     try:
-        cursor = databaseCursor(requestBody)
-        cursor.execute("CREATE DATABASE " + requestBody["database"])
+        cursor = databaseCursor(data)
+        cursor.execute("CREATE DATABASE " + data["database"])
         return "Database creation Successful"
-    except e:
-        return "Got Exception"  + e
+    except:
+        return "Got Exception"
     
 @app.route('/createTable', methods=['POST'])
 def createTable():
     data = request.json
-    requestBody = jsonify(data)
-    cursor = databaseCursor(requestBody)
-    cursor.execute("CREATE TABLE " + requestBody["tableName"] +" (id INT AUTO_INCREMENT PRIMARY KEY)")
+    try:
+        mydb = mysql.connector.connect(
+            host=data["host"],
+            user=data["username"],
+            passwd=data["password"],
+            database=data["database"]
+            )
+        cursor = mydb.cursor()
+        print("After cursor")
+        cursor.execute("CREATE TABLE " + data["tableName"] +" (id INT AUTO_INCREMENT PRIMARY KEY)")
+        print("After execute")
+        return "Table created successfuly"
+    except Exception as e:
+        return "Got exception", e
 
 @app.route('/addColumn', methods=['POST'])
 def addColumnToTable():
     data = request.json
-    requestBody = jsonify(data)
-    cursor = databaseCursor(requestBody)
-    cursor.execute("ALTER TABLE " + requestBody["tableName"] + " ADD COLUMN " + requestBody["column"] + " " + datatypes[requestBody["datatype"]])
+    try:
+        mydb = mysql.connector.connect(
+            host=data["host"],
+            user=data["username"],
+            passwd=data["password"],
+            database=data["database"]
+            )
+        cursor = mydb.cursor()
+        cursor.execute("ALTER TABLE " + data["tableName"] + " ADD COLUMN " + data["column"] + " " + datatypes[data["datatype"]])
+        return "Table created successfuly"
+    except Exception as e:
+        return "Got exception", e
 
 @app.route('/deleteTable', methods=['POST'])
-def deleteTable(cursor, tableName):
+def deleteTable():
     data = request.json
-    requestBody = jsonify(data)
-    cursor = databaseCursor(requestBody)
-    cursor.execute("DROP TABLE IF EXISTS" + requestBody["tableName"])
+    try:
+        mydb = mysql.connector.connect(
+            host=data["host"],
+            user=data["username"],
+            passwd=data["password"],
+            database=data["database"]
+            )
+        cursor = mydb.cursor()
+        cursor.execute("DROP TABLE IF EXISTS " + data["tableName"])
+        return "Table deleted successfuly"
+    except Exception as e:
+        return "Got exception", e
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0')

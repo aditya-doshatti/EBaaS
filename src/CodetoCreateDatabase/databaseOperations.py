@@ -1,8 +1,11 @@
 import mysql.connector
 from flask import Flask, request, jsonify
 from mysql.connector import Error
+from flask_cors import CORS
+
 
 app = Flask(__name__)
+CORS(app)
 
 datatypes = {
     "String" : "VARCHAR(255)",
@@ -54,30 +57,35 @@ def connectToDatabase():
         return "Got Exception" + e
 
 @app.route('/createDatabase', methods=['POST'])
-def createDatase():
+def createDatabase():
     data = request.json
     try:
-        cursor = databaseCursor(data)
+        mydb = mysql.connector.connect(
+            host=data["hostname"],
+            user=data["username"],
+            passwd=data["password"]
+            )
+        cursor = mydb.cursor()
         cursor.execute("CREATE DATABASE " + data["database"])
-        return "Database creation Successful"
-    except:
-        return "Got Exception"
+        return "Database created successfully"
+    except Exception as e:
+        return "Got exception", e
     
 @app.route('/createTable', methods=['POST'])
 def createTable():
     data = request.json
     try:
         mydb = mysql.connector.connect(
-            host=data["host"],
+            host=data["hostname"],
             user=data["username"],
             passwd=data["password"],
             database=data["database"]
             )
         cursor = mydb.cursor()
-        print("After cursor")
-        cursor.execute("CREATE TABLE " + data["tableName"] +" (id INT AUTO_INCREMENT PRIMARY KEY)")
-        print("After execute")
-        return "Table created successfuly"
+        tables = data["tables"]
+        for table in tables:
+            cursor.execute("CREATE TABLE " + table["name"] +" (id INT AUTO_INCREMENT PRIMARY KEY)")
+        return "Tables created successfuly"
     except Exception as e:
         return "Got exception", e
 
@@ -86,7 +94,7 @@ def addColumnToTable():
     data = request.json
     try:
         mydb = mysql.connector.connect(
-            host=data["host"],
+            host=data["hostname"],
             user=data["username"],
             passwd=data["password"],
             database=data["database"]
@@ -102,7 +110,7 @@ def deleteTable():
     data = request.json
     try:
         mydb = mysql.connector.connect(
-            host=data["host"],
+            host=data["hostname"],
             user=data["username"],
             passwd=data["password"],
             database=data["database"]

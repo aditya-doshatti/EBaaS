@@ -121,5 +121,31 @@ def deleteTable():
     except Exception as e:
         return "Got exception", e
 
+@app.route('/getInformation', methods=['POST'])
+def getTableInformation():
+    data = request.json
+    resp_data = {}
+    try:
+        mydb = mysql.connector.connect(
+            host=data["hostname"],
+            user=data["username"],
+            passwd=data["password"],
+            database=data["database"]
+            )
+        cursor = mydb.cursor()
+        cursor.execute("SELECT DISTINCT TABLE_NAME, COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA LIKE \'%" +data["database"] +"%\'")
+        result = cursor.fetchall()
+        print("result is: ",result)
+        for row in result:
+            resp_data[row[0]] = []
+        for row in result:
+            resp_data[row[0]].append(row[1])
+        print("resp_data is: ",resp_data)
+        return resp_data
+
+    except Exception as e:
+        return "Got exception", e
+
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0')

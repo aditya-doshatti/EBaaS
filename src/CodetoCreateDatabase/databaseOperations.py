@@ -100,8 +100,10 @@ def addColumnToTable():
             database=data["database"]
             )
         cursor = mydb.cursor()
-        cursor.execute("ALTER TABLE " + data["tableName"] + " ADD COLUMN " + data["column"] + " " + datatypes[data["datatype"]])
-        return "Table created successfuly"
+        columns = data["columns"]
+        for column in columns:
+            cursor.execute("ALTER TABLE " + data["tableName"] + " ADD COLUMN " + column["name"] + " " + datatypes[column["type"]])
+        return "Columns added successfuly"
     except Exception as e:
         return "Got exception", e
 

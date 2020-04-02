@@ -48,13 +48,17 @@ def connectToServer():
 @app.route('/connectToDatabase', methods=['POST'])
 def connectToDatabase():
     data = request.json
-    # requestBody = jsonify(data)
-    # print("Json body: ",requestBody,data)
     try:
-        cursor = databaseCursor(data)
-        return "Connection Successful"
-    except Error as e:
-        return "Got Exception" + e
+        mydb = mysql.connector.connect(
+            host=data["hostname"],
+            user=data["username"],
+            passwd=data["password"],
+            database=data["database"]
+            )
+        cursor = mydb.cursor()
+        return "Connection established"
+    except Exception as e:
+        return "Got exception", e
 
 @app.route('/createDatabase', methods=['POST'])
 def createDatabase():

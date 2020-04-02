@@ -22,6 +22,12 @@ class PrepareApiFiles:
 
         command_to_get_express_structure = 'express ./static/'+self.project
         command_to_create_config_folder = 'mkdir .\\static\\'+self.project+'\\config'
+        if(os.path.exists("./static/"+self.project)):
+            print("folder exists")
+            shutil.rmtree("./static/"+self.project)
+        if(os.path.exists("./static/"+self.project+".zip")):
+            print("zip exists")
+            os.remove("./static/"+self.project+".zip")
         os.system(command_to_get_express_structure)
         os.system(command_to_create_config_folder)
         os.system(command_to_get_model_file)
@@ -32,11 +38,11 @@ class PrepareApiFiles:
         shutil.rmtree("./static/"+self.project+"/views")
         # Editing config.json
         lines = open('./config/configSkeleton.json', 'r').readlines()
-        lines[2] = '\t\"DB_HOSTNAME\" : \"' + self.hostname + '\", \n'
-        lines[3] = '\t\"DB_USERNAME\" : \"' + self.username + '\", \n'
-        lines[4] = '\t\"DB_PASSWORD\" : \"' + self.password + '\", \n'
-        lines[5] = '\t\"DB_PORT\" : \"3306\", \n'
-        lines[6] = '\t\"DB_NAME\" : \"' + self.database + '\" \n'
+        lines[1] = '\t\"DB_HOSTNAME\" : \"' + self.hostname + '\", \n'
+        lines[2] = '\t\"DB_USERNAME\" : \"' + self.username + '\", \n'
+        lines[3] = '\t\"DB_PASSWORD\" : \"' + self.password + '\", \n'
+        lines[4] = '\t\"DB_PORT\" : \"3306\", \n'
+        lines[5] = '\t\"DB_NAME\" : \"' + self.database + '\"\n'
         out = open('./static/'+self.project+'/config/config.json', 'w')
         out.writelines(lines)
         out.close()
@@ -70,7 +76,7 @@ class PrepareApiFiles:
                 indexFile.write("".join(contents))
                 indexFile.close()
 
-                cursor.execute("select TABLE_NAME,COLUMN_NAME from INFORMATION_SCHEMA.KEY_COLUMN_USAGE where TABLE_schema = 'test' AND POSITION_IN_UNIQUE_CONSTRAINT is NULL AND CONSTRAINT_NAME = 'PRIMARY'")
+                cursor.execute("select TABLE_NAME,COLUMN_NAME from INFORMATION_SCHEMA.KEY_COLUMN_USAGE where TABLE_schema = '"+record1[0]+"' AND POSITION_IN_UNIQUE_CONSTRAINT is NULL AND CONSTRAINT_NAME = 'PRIMARY'")
                 rs = cursor.fetchall()
                 print('List Of Tables: ')
                 for r in rs:
@@ -95,7 +101,7 @@ class PrepareApiFiles:
                     indexFile.close()
 
                 #
-                cursor.execute("select `TABLE_NAME`,`COLUMN_NAME` from INFORMATION_SCHEMA.KEY_COLUMN_USAGE where TABLE_schema = 'test' AND POSITION_IN_UNIQUE_CONSTRAINT is NULL AND CONSTRAINT_NAME != 'PRIMARY'")
+                cursor.execute("select `TABLE_NAME`,`COLUMN_NAME` from INFORMATION_SCHEMA.KEY_COLUMN_USAGE where TABLE_schema = '"+record1[0]+"' AND POSITION_IN_UNIQUE_CONSTRAINT is NULL AND CONSTRAINT_NAME != 'PRIMARY'")
                 rs = cursor.fetchall()
                 for r in rs:
                     print("{0}        {1}".format(r[0], r[1]))
@@ -117,7 +123,7 @@ class PrepareApiFiles:
                     file.close()
 
                 ###################################################################################################
-                cursor.execute("select CONSTRAINT_NAME,TABLE_NAME,COLUMN_NAME,REFERENCED_TABLE_NAME,REFERENCED_COLUMN_NAME from INFORMATION_SCHEMA.KEY_COLUMN_USAGE where TABLE_SCHEMA like '%test%' and POSITION_IN_UNIQUE_CONSTRAINT = 1")
+                cursor.execute("select CONSTRAINT_NAME,TABLE_NAME,COLUMN_NAME,REFERENCED_TABLE_NAME,REFERENCED_COLUMN_NAME from INFORMATION_SCHEMA.KEY_COLUMN_USAGE where TABLE_SCHEMA like '%"+record1[0]+"%' and POSITION_IN_UNIQUE_CONSTRAINT = 1")
                 rows = cursor.fetchall()
                 for row in rows:
                     print("{0}        {1}".format(row[1], row[3]))

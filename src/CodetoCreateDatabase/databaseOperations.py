@@ -73,7 +73,7 @@ def createDatabase():
         cursor.execute("CREATE DATABASE " + data["database"])
         return "Database created successfully"
     except Exception as e:
-        return "Got exception", e
+        return "Got exception " + str(e), 500
     
 @app.route('/createTable', methods=['POST'])
 def createTable():
@@ -91,7 +91,7 @@ def createTable():
             cursor.execute("CREATE TABLE " + table["name"] +" (id INT AUTO_INCREMENT PRIMARY KEY)")
         return "Tables created successfuly"
     except Exception as e:
-        return "Got exception", e
+        return "Got exception " + str(e), 500
 
 @app.route('/addColumn', methods=['POST'])
 def addColumnToTable():
@@ -109,7 +109,7 @@ def addColumnToTable():
             cursor.execute("ALTER TABLE " + data["tableName"] + " ADD COLUMN " + column["name"] + " " + datatypes[column["type"]])
         return "Columns added successfuly"
     except Exception as e:
-        return "Got exception", e
+        return "Got exception " + str(e), 500 
 
 @app.route('/deleteTable', methods=['POST'])
 def deleteTable():
@@ -125,7 +125,7 @@ def deleteTable():
         cursor.execute("DROP TABLE IF EXISTS " + data["tableName"])
         return "Table deleted successfuly"
     except Exception as e:
-        return "Got exception", e
+        return "Got exception " + str(e), 500
 
 @app.route('/getInformation', methods=['POST'])
 def getTableInformation():
@@ -150,7 +150,7 @@ def getTableInformation():
         return resp_data
 
     except Exception as e:
-        return "Got exception", e
+        return "Got exception " + str(e), 500
 
 
 if __name__ == '__main__':

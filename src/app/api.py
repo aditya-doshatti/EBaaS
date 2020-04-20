@@ -402,19 +402,13 @@ def upload_file():
     if file and allowed_file(file.filename):
         filename = secure_filename(file.filename)
         file.save(os.path.join('./uploads/', filename))
-        print('Before DF!')
         df = pd.ExcelFile(file)
-        print('Before SN!')
         sn = df.sheet_names
-        print('for SN!')
-        print(sn)
-
         engine = create_engine('mysql://admin:admin@localhost/test')
         for s in sn:
             a  = pd.read_excel(file ,sheet_name= s, header= 0) 
             with engine.connect() as conn, conn.begin():
                 a.to_sql(name=s, con=conn, if_exists= 'replace')
-        
         resp = jsonify({'message' : 'File successfully uploaded'})
         resp.status_code = 201
         return resp

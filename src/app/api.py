@@ -1,4 +1,4 @@
-from flask import Flask, request, redirect, url_for, jsonify, send_file,make_response
+from flask import Flask, request, redirect, url_for, jsonify, send_file,make_response,send_from_directory
 import mysql.connector
 import requests
 import json
@@ -216,7 +216,7 @@ def launch_app():
         resp_obj = "Hello this is posting for "+project
         return make_response({"msg":"Application Launched"},
                          200)
-    except:
+    except Exception as e:
         print ("some error")
         return make_response({"error":e.msg},
                          500)
@@ -235,11 +235,22 @@ def zip_app(project):
         resp_obj = "Hello this is zipping for "+project
         return make_response({"msg":"Launched Application Zipped"},
                          200)
-    except:
+    except Exception as e:
         print ("some error")
         return make_response({"error":e.msg},
                          500)
 
+@app.route('/zip/<project>',methods=['GET'])
+def get_zip_app(project):
+    # req_data = request.get_json()
+    # project = request.args['project']
+    print("Got the project name: ",project)
+    try:
+        return send_from_directory('./static/', project+'.zip', as_attachment=True)
+    except Exception as e:
+        print ("some error")
+        return make_response({"error":e.msg},
+                         500)
 
 #database operations
 @app.route('/database',methods=['POST'])

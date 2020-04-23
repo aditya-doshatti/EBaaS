@@ -152,6 +152,53 @@ def getTableInformation():
     except Exception as e:
         return "Got exception " + str(e), 500
 
+@app.route('/deleteColumn', methods=['POST'])
+def deleteColumn():
+    data = request.json
+    try:
+        mydb = mysql.connector.connect(
+            host=data["hostname"],
+            user=data["username"],
+            passwd=data["password"],
+            database=data["database"]
+            )
+        cursor = mydb.cursor()
+        cursor.execute("ALTER TABLE " + data["tableName"] + " DROP " + data["columnName"])
+        return "Table updated successfuly"
+    except Exception as e:
+        return "Got exception " + str(e), 500
+
+@app.route('/addRelationShip', methods=['POST'])
+def addRelationShip():
+    data = request.json
+    try:
+        mydb = mysql.connector.connect(
+            host=data["hostname"],
+            user=data["username"],
+            passwd=data["password"],
+            database=data["database"]
+            )
+        cursor = mydb.cursor()
+        cursor.execute("ALTER TABLE " + data["table1"] + " ADD  CONSTRAINT Fk_" + data["table1"] + data["tabel2"] +" FOREIGN KEY " + data["ForeignKeyName"] + " REFERENCES "+ data["table2"]+"(" + data["table2Column"] +")")
+        return "Table updated successfuly"
+    except Exception as e:
+        return "Got exception " + str(e), 500
+
+@app.route('/dropRelationShip', methods=['POST'])
+def dropRelationShip():
+    data = request.json
+    try:
+        mydb = mysql.connector.connect(
+            host=data["hostname"],
+            user=data["username"],
+            passwd=data["password"],
+            database=data["database"]
+            )
+        cursor = mydb.cursor()
+        cursor.execute("ALTER TABLE " + data["table1"] + " DROP  FOREIGN KEY Fk_" + data["table1"] + data["tabel2"])
+        return "Table updated successfuly"
+    except Exception as e:
+        return "Got exception " + str(e), 500
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0')

@@ -400,18 +400,27 @@ def connectToDatabase():
 
 @app.route('/excel-upload/<databasename>', methods=['POST'])
 def upload_excel(databasename):
-    print(request.files['file'])
     file = request.files['file']
+    hostname = request.form.get('hostname')
+    username = request.form.get('username')
+    password = request.form.get('password')
     try:
         filename = secure_filename(file.filename)
+        path = os.path.join('./uploads/', filename)
         file.save(os.path.join('./uploads/', filename))
         df = pd.ExcelFile(file)
         sn = df.sheet_names
-        engine = create_engine('mysql://admin:admin@localhost/'+databasename)
+        engine = create_engine('mysql://'+username+':'+password+'@'+hostname+'/'+databasename)
         for s in sn:
             a  = pd.read_excel(file ,sheet_name= s, header= 0) 
             with engine.connect() as conn, conn.begin():
                 a.to_sql(name=s, con=conn, if_exists= 'replace')
+         
+        if os.path.exists(path):
+            os.remove(path)
+        else:
+            print("The file does not exist")
+
         return make_response({"msg":"File successfully uploaded"},
                          200)
     except Exception as e:
@@ -422,10 +431,15 @@ def upload_excel(databasename):
 @app.route('/sql-upload/<databasename>', methods=['POST'])
 def upload_sql(databasename):
     file = request.files['file']
+    hostname = request.form.get('hostname')
+    username = request.form.get('username')
+    password = request.form.get('password')
+
     try:
         filename = secure_filename(file.filename)
+        path = os.path.join('./uploads/', filename)
         file.save(os.path.join('./uploads/', filename))
-        cnx = mysql.connector.connect(user='root', password='root', host='localhost', database=databasename)
+        cnx = mysql.connector.connect(user= username , password= password, host= hostname, database=databasename)
         cursor = cnx.cursor()
         fd = open('./uploads/'+filename, 'r')
         sqlFile = fd.read()
@@ -437,6 +451,10 @@ def upload_sql(databasename):
                     cursor.execute(command)
             except ValueError as msg:
                 print ("Command skipped: ", msg)
+        if os.path.exists(path):
+            os.remove(path)
+        else:
+            print("The file does not exist")
         return make_response({"msg":"File successfully uploaded"},
                          200)
     except Exception as e:

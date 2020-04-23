@@ -382,6 +382,7 @@ def get_application_databases(applicationid):
 @app.route('/connectToDatabase', methods=['POST'])
 def connectToDatabase():
     data = request.json
+  
     try:
         mydb = mysql.connector.connect(
             host=data["hostname"],
@@ -397,42 +398,62 @@ def connectToDatabase():
                          500)
 
 
-
-
-@app.route('/file-upload', methods=['POST'])
-def upload_file():
-    if 'file' not in request.files:
-        resp = jsonify({'message' : 'No file part in the request'})
-        resp.status_code = 400
-        return resp
+@app.route('/excel-upload/<databasename>', methods=['POST'])
+def upload_excel(databasename):
+    print(request.files['file'])
     file = request.files['file']
-    if file.filename == '':
-        resp = jsonify({'message' : 'No file selected for uploading'})
-        resp.status_code = 400
-        return resp
-    if file and allowed_file(file.filename):
+    try:
         filename = secure_filename(file.filename)
         file.save(os.path.join('./uploads/', filename))
         df = pd.ExcelFile(file)
         sn = df.sheet_names
-        engine = create_engine('mysql://admin:admin@localhost/test')
+        engine = create_engine('mysql://admin:admin@localhost/'+databasename)
         for s in sn:
             a  = pd.read_excel(file ,sheet_name= s, header= 0) 
             with engine.connect() as conn, conn.begin():
                 a.to_sql(name=s, con=conn, if_exists= 'replace')
-        resp = jsonify({'message' : 'File successfully uploaded'})
-        resp.status_code = 201
-        return resp
-    else:
-        resp = jsonify({'message' : 'Allowed file types are xlsx and sql'})
-        resp.status_code = 400
-        return resp
+        return make_response({"msg":"File successfully uploaded"},
+                         200)
+    except Exception as e:
+        return make_response({"error":e.msg},
+                         500)
+
+
+# @app.route('/file-upload', methods=['POST'])
+# def upload_file():
+#     if 'file' not in request.files:
+#         resp = jsonify({'message' : 'No file part in the request'})
+#         resp.status_code = 400
+#         return resp
+#     file = request.files['file']
+#     if file.filename == '':
+#         resp = jsonify({'message' : 'No file selected for uploading'})
+#         resp.status_code = 400
+#         return resp
+#     if file and allowed_file(file.filename):
+#         filename = secure_filename(file.filename)
+#         file.save(os.path.join('./uploads/', filename))
+#         df = pd.ExcelFile(file)
+#         sn = df.sheet_names
+#         engine = create_engine('mysql://admin:admin@localhost/test')
+#         for s in sn:
+#             a  = pd.read_excel(file ,sheet_name= s, header= 0) 
+#             with engine.connect() as conn, conn.begin():
+#                 a.to_sql(name=s, con=conn, if_exists= 'replace')
+#         resp = jsonify({'message' : 'File successfully uploaded'})
+#         resp.status_code = 201
+#         return resp
+#     else:
+#         resp = jsonify({'message' : 'Allowed file types are xlsx and sql'})
+#         resp.status_code = 400
+#         return resp
 
 
 
 @app.route('/createDatabase', methods=['POST'])
 def createDatabase():
     data = request.json
+    print("My Data:::::::::::::",data)
     try:
         mydb = mysql.connector.connect(
             host=data["hostname"],

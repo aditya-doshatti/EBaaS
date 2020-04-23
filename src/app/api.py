@@ -419,6 +419,31 @@ def upload_excel(databasename):
                          500)
 
 
+@app.route('/sql-upload/<databasename>', methods=['POST'])
+def upload_sql(databasename):
+    file = request.files['file']
+    try:
+        filename = secure_filename(file.filename)
+        file.save(os.path.join('./uploads/', filename))
+        cnx = mysql.connector.connect(user='root', password='root', host='localhost', database=databasename)
+        cursor = cnx.cursor()
+        fd = open('./uploads/'+filename, 'r')
+        sqlFile = fd.read()
+        fd.close()
+        sqlCommands = sqlFile.split(';')
+        for command in sqlCommands:
+            try:
+                if command.rstrip() != '':
+                    cursor.execute(command)
+            except ValueError as msg:
+                print ("Command skipped: ", msg)
+        return make_response({"msg":"File successfully uploaded"},
+                         200)
+    except Exception as e:
+        return make_response({"error":e.msg},
+                         500)
+
+
 # @app.route('/file-upload', methods=['POST'])
 # def upload_file():
 #     if 'file' not in request.files:

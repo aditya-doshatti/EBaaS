@@ -21,12 +21,7 @@ import smimg1 from "../../assets/images/small/img-1.jpg";
 import smimg2 from "../../assets/images/small/img-2.jpg";
 
 // Charts
-import LineAreaChart from "../AllCharts/apex/lineareachart";
-import RadialChart from "../AllCharts/apex/apexdonut";
-import Apexdonut from "../AllCharts/apex/apexdonut1";
-import SparkLine from "../AllCharts/sparkline/sparkline";
-import SparkLine1 from "../AllCharts/sparkline/sparkline1";
-import Salesdonut from "../AllCharts/apex/salesdonut";
+
 import TopBar2 from "../../components/VerticalLayout/TopBar2";
 import axios from 'axios'
 

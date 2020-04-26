@@ -21,7 +21,7 @@ class PrepareApiFiles:
                                                     -o ./static/'+self.project+'/models'
 
         command_to_get_express_structure = 'express ./static/'+self.project
-        command_to_create_config_folder = 'mkdir .\\static\\'+self.project+'\\config'
+        command_to_create_config_folder = 'mkdir ./static/'+self.project+'/config'
         if(os.path.exists("./static/"+self.project)):
             print("folder exists")
             shutil.rmtree("./static/"+self.project)

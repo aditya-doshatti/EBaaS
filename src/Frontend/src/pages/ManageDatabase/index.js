@@ -123,6 +123,12 @@ class ManageDatabase extends Component {
         if(this.state.error){
             error = <p className="text-danger text-center">{this.state.error}</p>
         }
+        var connectToDatabase = null
+        if(localStorage.getItem("connected")!="true"){
+            connectToDatabase = <Button type="submit" color="primary" className="mr-1" onClick={event =>  window.location.href='/connecttodatabase'}>
+                                    Connect to a new database
+                                </Button>
+        }
         return (
             <React.Fragment>
             {redirect}
@@ -185,19 +191,7 @@ class ManageDatabase extends Component {
                                             </tbody>
                                         </table>
                                     </div>
-                                    {this.state.databases.map(database => (
-                                    
-                                        localStorage.getItem("connectionname") === database["connectionname"] ? (
-                                            <Button type="submit" color="primary" className="mr-1" onClick={event =>  window.location.href='/connecttodatabase'} disabled>
-                                                Connect to a new database
-                                            </Button>
-                                        ):(
-                                        <Button type="submit" color="primary" className="mr-1" onClick={event =>  window.location.href='/connecttodatabase'}>
-                                                Connect to a new database
-                                            </Button>
-                                        )
-                                    
-                                    ))}
+                                    {connectToDatabase}
                                 </CardBody>
                             </Card>
                         </Col>

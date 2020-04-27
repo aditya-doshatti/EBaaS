@@ -125,10 +125,10 @@ class Dashboard extends Component {
 
   handleValidSubmit = (event,values) => {
     console.log("Valid Submit")
-    if(this.state.columns.length===0){
+    if(!this.state.tableName){
       Swal.fire({
-        title: 'No Columns mentioned',
-        confirmButtonText: "I'll add some"
+        title: 'No Table Selected',
+        confirmButtonText: "Ok, select"
       })
     }else{
       event.preventDefault();
@@ -138,30 +138,21 @@ class Dashboard extends Component {
         password:localStorage.getItem("password"),
         database:localStorage.getItem("database"),
         tableName:this.state.tableName,
-        columns : this.state.columns
     }
     
-    axios.post("http://localhost:5000/addColumn",data)
+    axios.post("http://localhost:5000/deleteTable",data)
         .then(response => {
             console.log("Got the response",response.data);
             if(response.status === 200){
                 Swal.fire({
-                  title:"Columns added successfully"
+                  title:"Table Deleted Successfully"
                 }).then((result)=>{
                   this.setState({
                     name: "",
                     type: "",
                     columns: [{ name: "" ,type: ""}],
-                    added:true
+                    deleted:true
                   })
-                })
-                .catch(error => {
-                  if(error.response){
-                    // console.log("Register API error is: ", error.response.data)
-                    this.setState({
-                      error:error.response.data["error"]
-                    })
-                  }
                 })
             }
         })
@@ -187,7 +178,7 @@ class Dashboard extends Component {
     if(!this.state.connected){
       redirect = <Redirect to="/connecttodatabase"></Redirect>
     }
-    if(this.state.added){
+    if(this.state.deleted){
       redirect = <Redirect to="/viewDatabase"></Redirect>
     }
     var error = null

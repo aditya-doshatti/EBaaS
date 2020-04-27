@@ -17,6 +17,9 @@ import pandas as pd
 import re
 from sqlalchemy import create_engine
 from tablib import Dataset
+import datetime
+
+
 
 
 app = Flask(__name__, static_url_path='/static')
@@ -48,7 +51,7 @@ def hello():
 
 
 
-#User Operations
+############################# USER OPERATIONS ################################################
 
 
 @app.route('/login',methods=["POST"])
@@ -84,7 +87,7 @@ def userLogin():
                 return make_response({"error":"Invalid Password"},
                          500)
     except Exception as e:
-        return make_response({"error":e.msg},
+        return make_response({"error":e.__str__()},
                          500)
 
 @app.route('/register',methods=["POST"])
@@ -119,10 +122,10 @@ def userRegister():
             return make_response({"msg":"Registered Successfully"},
                          200)
     except Exception as e:
-        return make_response({"error":e.msg},
+        return make_response({"error":e.__str__()},
                          500)
         
-# Application Operations
+############################# APPLICATION OPERATIONS ################################################
 @app.route('/application',methods=['POST'])
 def create_app():
     req_data = request.get_json()
@@ -141,8 +144,7 @@ def create_app():
         return make_response({"msg":"New Application Created"},
                          200)
     except Exception as e:
-        print(e.msg)
-        return make_response({"error":e.msg},
+        return make_response({"error":e.__str__()},
                          500)
 
 @app.route('/application/user/<userid>',methods=['GET'])
@@ -170,7 +172,7 @@ def get_users_app(userid):
         return make_response(jsonify(resp_data),
                          200)
     except Exception as e:
-        return make_response({"error":e.msg},
+        return make_response({"error":e.__str__()},
                          500)
 
 @app.route('/application/<id>',methods=['GET'])
@@ -192,10 +194,39 @@ def get_app(id):
         resp_data["description"] = result[3]
         resp_data["server"] = result[4]
         resp_data["launched"] = result[5]
+        resp_data["created_on"] = result[6]
+        resp_data["launched_on"] = result[7]
         return make_response(jsonify(resp_data),
                          200)
     except Exception as e:
-        return make_response({"error":e.msg},
+        return make_response({"error":e.__str__()},
+                         500)
+
+
+@app.route('/application/<id>',methods=['PUT'])
+def edit_app(id):
+    resp_data = {}
+    try:
+        mydb = mysql.connector.connect(
+            host="localhost",
+            user="root",
+            passwd="root",
+            database="ebaas",
+            autocommit=True
+            )
+        cursor = mydb.cursor()
+        now = datetime.datetime.now()
+        print ("Current date and time : ")
+        print (now.strftime("%Y-%m-%d %H:%M:%S"))
+        print('UPDATE application SET launched = 1, launched_on = "'+now.strftime("%Y-%m-%d %H:%M:%S")+'" WHERE id='+id)
+        cursor.execute('UPDATE application SET launched = TRUE, launched_on = "'+now.strftime("%Y-%m-%d %H:%M:%S")+'" WHERE id='+id)
+        # cursor.execute('UPDATE application SET launched_on = "'+now.strftime("%Y-%m-%d %H:%M:%S")+'" WHERE id='+id)
+        mydb.commit()
+        print(cursor.rowcount)
+        return make_response(jsonify("Updated Successfully"),
+                         200)
+    except Exception as e:
+        return make_response({"error":e.__str__()},
                          500)
 
 
@@ -217,8 +248,8 @@ def launch_app():
         return make_response({"msg":"Application Launched"},
                          200)
     except Exception as e:
-        print ("some error")
-        return make_response({"error":e.msg},
+        print ("some error: ",e.__str__())
+        return make_response({"error":e.__str__()},
                          500)
 
 
@@ -237,7 +268,7 @@ def zip_app(project):
                          200)
     except Exception as e:
         print ("some error")
-        return make_response({"error":e.msg},
+        return make_response({"error":e.__str__()},
                          500)
 
 @app.route('/zip/<project>',methods=['GET'])
@@ -249,10 +280,10 @@ def get_zip_app(project):
         return send_from_directory('./static/', project+'.zip', as_attachment=True)
     except Exception as e:
         print ("some error")
-        return make_response({"error":e.msg},
+        return make_response({"error":e.__str__()},
                          500)
 
-#database operations
+############################# DATABASE OPERATIONS ################################################
 @app.route('/database',methods=['POST'])
 def save_database_details():
     data = request.get_json()
@@ -287,7 +318,7 @@ def save_database_details():
     except Exception as e:
         print("Error while adding a user database")
         print(e)
-        return make_response({"error":e.msg},
+        return make_response({"error":e.__str__()},
                          500)
 
 @app.route('/database/<id>',methods=['GET'])
@@ -314,7 +345,7 @@ def get_database_details(id):
         return make_response(jsonify(resp_data),
                          200)
     except Exception as e:
-        return make_response({"error":e.msg},
+        return make_response({"error":e.__str__()},
                          500)
 
 
@@ -345,7 +376,7 @@ def get_user_databases(userid):
         return make_response(jsonify(resp_data),
                          200)
     except Exception as e:
-        return make_response({"error":e.msg},
+        return make_response({"error":e.__str__()},
                          500)
 
 
@@ -376,7 +407,7 @@ def get_application_databases(applicationid):
         return make_response(jsonify(resp_data),
                          200)
     except Exception as e:
-        return make_response({"error":e.msg},
+        return make_response({"error":e.__str__()},
                          500)
 
 @app.route('/connectToDatabase', methods=['POST'])
@@ -394,7 +425,7 @@ def connectToDatabase():
         return make_response({"msg":"Connection Established"},
                          200)
     except Exception as e:
-        return make_response({"error":e.msg},
+        return make_response({"error":e.__str__()},
                          500)
 
 
@@ -424,7 +455,7 @@ def upload_excel(databasename):
         return make_response({"msg":"File successfully uploaded"},
                          200)
     except Exception as e:
-        return make_response({"error":e.msg},
+        return make_response({"error":e.__str__()},
                          500)
 
 
@@ -458,7 +489,7 @@ def upload_sql(databasename):
         return make_response({"msg":"File successfully uploaded"},
                          200)
     except Exception as e:
-        return make_response({"error":e.msg},
+        return make_response({"error":e.__str__()},
                          500)
 
 
@@ -508,7 +539,7 @@ def createDatabase():
         return make_response({"msg":"Database Created"},
                          200)
     except Exception as e:
-        return make_response({"error":e.msg},
+        return make_response({"error":e.__str__()},
                          500)
     
 @app.route('/createTable', methods=['POST'])
@@ -528,7 +559,7 @@ def createTable():
         return make_response({"msg":"Tables Created Successfully"},
                          200)
     except Exception as e:
-        return make_response({"error":e.msg},
+        return make_response({"error":e.__str__()},
                          500)
 
 @app.route('/addColumn', methods=['POST'])
@@ -548,26 +579,9 @@ def addColumnToTable():
         return make_response({"msg":"Columns Added Successfully"},
                          200)
     except Exception as e:
-        return make_response({"error":e.msg},
+        return make_response({"error":e.__str__()},
                          500)
 
-@app.route('/deleteTable', methods=['POST'])
-def deleteTable():
-    data = request.json
-    try:
-        mydb = mysql.connector.connect(
-            host=data["hostname"],
-            user=data["username"],
-            passwd=data["password"],
-            database=data["database"]
-            )
-        cursor = mydb.cursor()
-        cursor.execute("DROP TABLE IF EXISTS " + data["tableName"])
-        return make_response({"msg":"Tables Deleted Successfully"},
-                         200)
-    except Exception as e:
-        return make_response({"error":e.msg},
-                         500)
 
 @app.route('/getInformation', methods=['POST'])
 def getTableInformation():
@@ -593,9 +607,83 @@ def getTableInformation():
                          200)
 
     except Exception as e:
-        return make_response({"error":e.msg},
+        return make_response({"error":e.__str__()},
                          500)
 
+
+@app.route('/deleteTable', methods=['POST'])
+def deleteTable():
+    data = request.json
+    try:
+        mydb = mysql.connector.connect(
+            host=data["hostname"],
+            user=data["username"],
+            passwd=data["password"],
+            database=data["database"]
+            )
+        cursor = mydb.cursor()
+        cursor.execute("DROP TABLE IF EXISTS " + data["tableName"])
+        return make_response(jsonify("Table Deleted Successfully"),
+                         200)
+    except Exception as e:
+        return make_response({"error":e.__str__()},
+                         500)
+
+@app.route('/deleteColumn', methods=['POST'])
+def deleteColumn():
+    data = request.json
+    try:
+        mydb = mysql.connector.connect(
+            host=data["hostname"],
+            user=data["username"],
+            passwd=data["password"],
+            database=data["database"]
+            )
+        cursor = mydb.cursor()
+        cursor.execute("ALTER TABLE " + data["tableName"] + " DROP " + data["columnName"])
+        mydb.commit()
+        return make_response(jsonify("Table Updated Successfully"),
+                         200)
+    except Exception as e:
+        return "Got exception " + str(e), 500
+
+@app.route('/addRelationShip', methods=['POST'])
+def addRelationShip():
+    data = request.json
+    try:
+        mydb = mysql.connector.connect(
+            host=data["hostname"],
+            user=data["username"],
+            passwd=data["password"],
+            database=data["database"]
+            )
+        cursor = mydb.cursor()
+        print("ALTER TABLE " + data["table1"] + " ADD CONSTRAINT Fk_"+data["table1"]+"_"+data["ForeignKeyName"]+"_"+data["table2"]+" FOREIGN KEY (" + data["ForeignKeyName"] + ") REFERENCES "+ data["table2"]+"(" + data["table2Column"] +")")
+        cursor.execute("ALTER TABLE " + data["table1"] + " ADD CONSTRAINT Fk_"+data["table1"]+"_"+data["ForeignKeyName"]+"_"+data["table2"]+" FOREIGN KEY (" + data["ForeignKeyName"] + ") REFERENCES "+ data["table2"]+"(" + data["table2Column"] +")")
+        return make_response(jsonify("Relationship added succesfully"),
+                         200)
+    except Exception as e:
+        print(e.__str__())
+        return make_response({"error":e.__str__()},
+                         500)
+
+@app.route('/dropRelationShip', methods=['POST'])
+def dropRelationShip():
+    data = request.json
+    try:
+        mydb = mysql.connector.connect(
+            host=data["hostname"],
+            user=data["username"],
+            passwd=data["password"],
+            database=data["database"]
+            )
+        cursor = mydb.cursor()
+        cursor.execute("ALTER TABLE " + data["table1"] + " DROP  FOREIGN KEY Fk_" + data["table1"] + data["tabel2"])
+        return make_response(jsonify("Relationship dropped and table altered"),
+                         200)
+    except Exception as e:
+        return make_response({"error":e.__str__()},
+                         500)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0')

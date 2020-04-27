@@ -21,7 +21,7 @@ class PrepareApiFiles:
                                                     -o ./static/'+self.project+'/models'
 
         command_to_get_express_structure = 'express ./static/'+self.project
-        command_to_create_config_folder = 'mkdir ./static/'+self.project+'/config'
+        command_to_create_config_folder = './static/'+self.project+'/config'
         if(os.path.exists("./static/"+self.project)):
             print("folder exists")
             shutil.rmtree("./static/"+self.project)
@@ -29,7 +29,7 @@ class PrepareApiFiles:
             print("zip exists")
             os.remove("./static/"+self.project+".zip")
         os.system(command_to_get_express_structure)
-        os.system(command_to_create_config_folder)
+        os.mkdir(command_to_create_config_folder)
         os.system(command_to_get_model_file)
         os.remove("./static/"+self.project+"/app.js")
         os.remove("./static/"+self.project+"/routes/index.js")

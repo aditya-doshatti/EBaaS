@@ -32,11 +32,15 @@ class Dashboard extends Component {
     this.state = {
       name:null,
       description:null,
-      server:null
+      server:null,
+      launched_on:null,
+      created_on:null,
+      download:false
     };
   }
 
   componentDidMount(){
+    console.log("Rendered the component")
     axios.get("http://localhost:5000/application/"+localStorage.getItem("applicationid"))
       .then(response => {
         console.log("GET APPLICATION API RESPONSE IS: ",response.data)
@@ -44,7 +48,9 @@ class Dashboard extends Component {
           this.setState({
             name:response.data["name"],
             description:response.data["description"],
-            server:response.data["server"]
+            server:response.data["server"],
+            created_on:response.data["created_on"],
+            launched_on:response.data["launched_on"],
           })
         }
       })
@@ -57,7 +63,6 @@ class Dashboard extends Component {
         }
       })
   }
-
 
   handleValidSubmit = (event,values) => {
     console.log("Valid Submit")
@@ -83,9 +88,22 @@ class Dashboard extends Component {
               .then(response => {
                 console.log("ZIP APPLICATION RESPONSE IS: ",response.data)
                 if(response.status === 200){
-                  this.setState({
-                    download:true
-                  })
+                  axios.put("http://localhost:5000/application/"+localStorage.getItem("applicationid"))
+                    .then(response => {
+                      if(response.status===200){
+                        this.setState({
+                          download:true
+                        })
+                      }
+                    })
+                    .catch(error => {
+                      if(error.response){
+                        // console.log("Register API error is: ", error.response.data)
+                        this.setState({
+                          error:error.response.data["error"]
+                        })
+                      }  
+                    })
                 }
               })
               .catch(error => {
@@ -212,7 +230,7 @@ class Dashboard extends Component {
               <Card>
                 <CardBody>
                   <div>
-                    <h4 className="card-title mb-4">Application Name</h4>
+                    <h4 className="card-title mb-4">{this.state.name}</h4>
                   </div>
                   <div className="wid-peity mb-4">
                     <div className="row">
@@ -226,7 +244,7 @@ class Dashboard extends Component {
                     <div className="row">
                       <div className="col-md-12">
                           <p className="text-muted">Created on</p>
-                          <h5 className="mb-3">Time stamp</h5>
+                          <h5 className="mb-3">{this.state.created_on}</h5>
                       </div>
                     </div>
                   </div>
@@ -234,23 +252,15 @@ class Dashboard extends Component {
                     <div className="row">
                       <div className="col-md-12">
                           <p className="text-muted">Last Modified on</p>
-                          <h5 className="mb-3">Time stamp</h5>
+                          <h5 className="mb-3">{this.state.launched_on}</h5>
                       </div>
                     </div>
                   </div>
                   <div className="wid-peity mb-4">
                     <div className="row">
                       <div className="col-md-12">
-                          <p className="text-muted">Last Exported at</p>
-                          <h5 className="mb-3">Time stamp</h5>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="wid-peity mb-4">
-                    <div className="row">
-                      <div className="col-md-12">
-                          <p className="text-muted">Last Hosted at</p>
-                          <h5 className="mb-3">Time stamp</h5>
+                          <p className="text-muted">Last Launched at</p>
+                          <h5 className="mb-3">{this.state.launched_on}</h5>
                       </div>
                     </div>
                   </div>

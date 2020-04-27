@@ -25,11 +25,11 @@ class Dashboard extends Component {
     this.state = {
       connected: true,
       keys: [],
-      name: "",
-      type: "",
-      columns: [{ name: "", type: "" }],
-      tableName:false,
-      error:null
+      information: null,
+      deleted: false,
+      error: null,
+      tableName: null,
+      columnName: null
     };
   }
 
@@ -59,6 +59,7 @@ class Dashboard extends Component {
           if (response.status === 200) {
             let keys = Object.keys(response.data)
             this.setState({
+              information: response.data,
               keys: keys
             })
           } else {
@@ -74,125 +75,94 @@ class Dashboard extends Component {
   handleTableChange = (e) => {
     console.log("Table selected is: ", e.target.value)
     this.setState({
-      tableName:e.target.value
+      tableName: e.target.value
     })
   }
 
-  handleColumnNameChange = idx => evt => {
-    const newColumns = this.state.columns.map((column, sidx) => {
-      if (idx !== sidx) return column;
-      return { ...column, name: evt.target.value };
-    });
-
-    this.setState({ 
-      columns: newColumns 
-    },() => {
-      console.log("State in Name Change: ",this.state.columns)
-    });
-
-  };
-
-  handleColumnTypeChange = idx => evt => {
-    const newColumns = this.state.columns.map((column, sidx) => {
-      if (idx !== sidx) return column;
-      return { ...column, type: evt.target.value };
-    });
-
-    this.setState({ 
-      columns: newColumns 
-    },() => {
-      console.log("State in Name Change: ",this.state.columns)
-    });
-
-  };
-
-  handleAddRowNested = () => {
+  handleColumnChange = (e) => {
+    console.log("Column selected is: ", e.target.value)
     this.setState({
-      columns: this.state.columns.concat([{ name: "" ,type: ""}])
-    },()=>{
-      console.log("After adding a new row",this.state.columns)
-    });
-  };
+      columnName: e.target.value
+    })
+  }
 
 
-  handleRemoveRowNested = idx => () => {
-    this.setState({
-      columns: this.state.columns.filter((s, sidx) => idx !== sidx)
-    },() => {
-      console.log("After removing a row",this.state.columns)
-    });
-  };
 
-  handleValidSubmit = (event,values) => {
+  handleValidSubmit = (event, values) => {
     console.log("Valid Submit")
-    if(this.state.columns.length===0){
-      Swal.fire({
-        title: 'No Columns mentioned',
-        confirmButtonText: "I'll add some"
-      })
-    }else{
-      event.preventDefault();
-      const data = {
-        hostname:localStorage.getItem("hostname"),
-        username:localStorage.getItem("username"),
-        password:localStorage.getItem("password"),
-        database:localStorage.getItem("database"),
-        tableName:this.state.tableName,
-        columns : this.state.columns
+    event.preventDefault();
+    const data = {
+      hostname: localStorage.getItem("hostname"),
+      username: localStorage.getItem("username"),
+      password: localStorage.getItem("password"),
+      database: localStorage.getItem("database"),
+      tableName: this.state.tableName,
+      columnName: this.state.columnName
     }
-    
-    axios.post("http://localhost:5000/addColumn",data)
-        .then(response => {
-            console.log("Got the response",response.data);
-            if(response.status === 200){
-                Swal.fire({
-                  title:"Columns added successfully"
-                }).then((result)=>{
-                  this.setState({
-                    name: "",
-                    type: "",
-                    columns: [{ name: "" ,type: ""}],
-                    added:true
-                  })
-                })
-                .catch(error => {
-                  if(error.response){
-                    // console.log("Register API error is: ", error.response.data)
-                    this.setState({
-                      error:error.response.data["error"]
-                    })
-                  }
-                })
-            }
-        })
-        .catch(error => {
-          if(error.response){
-            // console.log("Register API error is: ", error.response.data)
+
+    axios.post("http://localhost:5000/deleteColumn", data)
+      .then(response => {
+        console.log("Got the response", response.data);
+        if (response.status === 200) {
+          Swal.fire({
+            title: "Column removed successfully"
+          }).then((result) => {
             this.setState({
-              error:error.response.data["error"]
+              deleted: true
             })
-          }
-        })
-    }
+          })
+        }
+      })
+      .catch(error => {
+        if (error.response) {
+          // console.log("Register API error is: ", error.response.data)
+          this.setState({
+            error: error.response.data["error"]
+          })
+        }
+      })
   };
 
   handleInValidSubmit = (event, values) => {
     this.setState({
-        error:"Invalid Form Values"
+      error: "Invalid Form Values"
     });
   };
 
   render() {
+
     var redirect = null
-    if(!this.state.connected){
+    if (!this.state.connected) {
       redirect = <Redirect to="/connecttodatabase"></Redirect>
     }
-    if(this.state.added){
+    if (this.state.deleted) {
       redirect = <Redirect to="/viewDatabase"></Redirect>
     }
     var error = null
-    if(this.state.error){
+    if (this.state.error) {
       error = <p className="text-danger text-center">{this.state.error}</p>
+    }
+
+    var columnMenu = null
+    if (this.state.information && this.state.tableName && this.state.information[this.state.tableName]) {
+      console.log("Column selection should appear")
+      columnMenu = <div className="form-group">
+        <Row>
+          <Col className="form-group">
+            <Label for="formname">Column: </Label>
+            <AvField type="select" name="column" className="form-control" onChange={this.handleColumnChange}
+              validate={{ required: { value: true } }}
+              errorMessage="Select the column"
+            >
+              <option selected>select</option>
+              {this.state.information && this.state.information[this.state.tableName].map((key) => (
+                <option value={key}>{key}</option>
+              ))}
+            </AvField>
+          </Col>
+
+        </Row>
+      </div>
     }
     return (
       <React.Fragment>
@@ -217,7 +187,7 @@ class Dashboard extends Component {
             <Col lg={12}>
               <Card>
                 <CardBody>
-                {error}
+                  {error}
                   <AvForm className="outer-repeater" onValidSubmit={this.handleValidSubmit} onInvalidSubmit={this.handleInValidSubmit}>
                     <div data-repeater-list="outer-group" className="outer">
                       <div data-repeater-item className="outer">
@@ -235,33 +205,18 @@ class Dashboard extends Component {
                           <Label for="formname">Table: </Label>
                           <AvField type="select" name="table" className="form-control" onChange={this.handleTableChange}
                             validate={{ required: { value: true } }}
-                            errorMessage = "Select the table again"
-                          > 
+                            errorMessage="Select the table again"
+                          >
                             <option selected>select</option>
                             {this.state.keys.map((key) => (
                               <option value={key}>{key}</option>
                             ))}
                           </AvField>
-                            
+
                         </div>
-                        <div className="form-group">
-                        <Row>
-                        <Col  className="form-group">
-                        <Label for="formname">Column: </Label>
-                          <AvField type="select" name="table" className="form-control" onChange={this.handleTableChange}
-                            validate={{ required: { value: true } }}
-                            errorMessage = "Select the table again"
-                          > 
-                            <option selected>select</option>
-                            {this.state.keys.map((key) => (
-                              <option value={key}>{key}</option>
-                            ))}
-                          </AvField>
-                            </Col>
-                            
-                        </Row>
-                        </div>
-                        
+
+
+                        {columnMenu}
 
                         <FormGroup className="mb-0">
                           <div>

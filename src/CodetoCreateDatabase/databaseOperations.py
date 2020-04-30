@@ -179,7 +179,13 @@ def addRelationShip():
             database=data["database"]
             )
         cursor = mydb.cursor()
-        cursor.execute("ALTER TABLE " + data["table1"] + " ADD  CONSTRAINT Fk_" + data["table1"] + data["tabel2"] +" FOREIGN KEY " + data["ForeignKeyName"] + " REFERENCES "+ data["table2"]+"(" + data["table2Column"] +")")
+        queryToGetDataType = "SELECT DATA_TYPE FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name = \'" + data['table2'] + "\' AND COLUMN_NAME = \'" + data['table2Column'] +"\'"
+        cursor.execute(queryToGetDataType)
+        resultsOfDatatype = cursor.fetchone()
+        for datatype in resultsOfDatatype:
+            foreignDataType = datatype
+        query = "ALTER TABLE " + data["table1"] + " ADD " + data["ForeignKeyName"] + " " + foreignDataType + ", ADD  CONSTRAINT Fk_" + data["table1"] + data["table2"] +" FOREIGN KEY (" + data["ForeignKeyName"] + ") REFERENCES "+ data["table2"]+"(" + data["table2Column"] +")"
+        cursor.execute(query)
         return "Table updated successfuly"
     except Exception as e:
         return "Got exception " + str(e), 500
@@ -195,7 +201,8 @@ def dropRelationShip():
             database=data["database"]
             )
         cursor = mydb.cursor()
-        cursor.execute("ALTER TABLE " + data["table1"] + " DROP  FOREIGN KEY Fk_" + data["table1"] + data["tabel2"])
+        cursor.execute("ALTER TABLE " + data["table1"] + " DROP  FOREIGN KEY Fk_" + data["table1"] + data["table2"])
+        cursor.execute("ALTER TABLE " + data["table1"] + " DROP " + data["columnName"])
         return "Table updated successfuly"
     except Exception as e:
         return "Got exception " + str(e), 500

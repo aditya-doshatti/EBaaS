@@ -10,6 +10,7 @@ import { AvForm, AvField } from "availity-reactstrap-validation";
 // import images
 import "chartist/dist/scss/chartist.scss";
 import { Redirect } from "react-router-dom";
+import {BASE_URL} from '../../config'
 
 class ExistingForm extends Component {
     constructor(props) {
@@ -51,11 +52,11 @@ class ExistingForm extends Component {
             database:this.state.database
         }
 
-        axios.post("http://localhost:5000/connectToDatabase",data)
+        axios.post(BASE_URL + "/connectToDatabase",data)
             .then(response => {
                 console.log("CONNECT TO DATABASE API RESPONSE IS: ",response.data)
                 if(response.status === 200){
-                    axios.post("http://localhost:5000/database",data)
+                    axios.post(BASE_URL + "/database",data)
                         .then(response2 => {
                             console.log("ADD DATABASE API RESPONSE IS: ",response2.data)
                             if(response.status === 200){

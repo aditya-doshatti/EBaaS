@@ -21,6 +21,7 @@ import { AvForm, AvField } from "availity-reactstrap-validation";
 
 import "chartist/dist/scss/chartist.scss";
 import axios from "axios";
+import {BASE_URL} from '../../config'
 
 class ViewDatabase extends Component {
     constructor(props) {
@@ -46,7 +47,7 @@ class ViewDatabase extends Component {
                 database: localStorage.getItem("database"),
             }
 
-            axios.post("http://localhost:5000/getInformation", data)
+            axios.post(BASE_URL + "/getInformation", data)
                 .then(response => {
                     console.log("Got the response", response.data);
                     if (response.status === 200) {

@@ -24,6 +24,7 @@ import smimg2 from "../../assets/images/small/img-2.jpg";
 
 
 import axios from 'axios'
+import {BASE_URL} from '../../config'
 
 class ManageDatabase extends Component {
     constructor(props) {
@@ -36,7 +37,7 @@ class ManageDatabase extends Component {
     }
 
     componentDidMount(){
-        axios.get("http://localhost:5000/database/user/"+localStorage.getItem("userid"))
+        axios.get(BASE_URL + "/database/user/"+localStorage.getItem("userid"))
             .then(response => {
                 console.log("GET USER DATABASES API RESPONSE IS: ",response.data)
                 if(response.status === 200){
@@ -57,7 +58,7 @@ class ManageDatabase extends Component {
 
     handleDatabaseConnect = (event) => {
         console.log("databse id is: ",event.target.id)
-        axios.get("http://localhost:5000/database/"+event.target.id)
+        axios.get(BASE_URL + "/database/"+event.target.id)
             .then(response => {
                 console.log("GET DATABASE DETAILS API RESPONSE IS: ",response.data)
                 if(response.status === 200){
@@ -67,7 +68,7 @@ class ManageDatabase extends Component {
                         password:response.data["password"],
                         database:response.data["dbname"]
                     }
-                    axios.post("http://localhost:5000/connectToDatabase",data)
+                    axios.post(BASE_URL + "/connectToDatabase",data)
                         .then(response2 => {
                             console.log("CONNECT TO DATABASE API RESPONSE IS: ",response2.data)
                             if(response.status === 200){

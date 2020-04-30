@@ -6,6 +6,7 @@ import { AvForm, AvField } from "availity-reactstrap-validation";
 import { Link, Redirect } from "react-router-dom";
 // Custom Scrollbar
 import "chartist/dist/scss/chartist.scss";
+import {BASE_URL} from '../../config'
 
 class ExcelForm extends Component {
     constructor(props) {
@@ -53,7 +54,7 @@ class ExcelForm extends Component {
             database:values.database
         }
 
-        axios.post("http://localhost:5000/createDatabase",data)
+        axios.post(BASE_URL + "/createDatabase",data)
             .then(response => {
                 console.log("Got the response",response.data);
                 if(response.status === 200){
@@ -67,7 +68,7 @@ class ExcelForm extends Component {
                         database:values.database
                     }
                     console.log("data is: ",data)
-                    axios.post("http://localhost:5000/database",data)
+                    axios.post(BASE_URL + "/database",data)
                         .then(response1 => {
                             console.log("DATABASE SAVING API RESPONSE IS: ",response1.data)
                             if(response1.status === 200){

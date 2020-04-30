@@ -9,6 +9,7 @@ import { Link, Redirect } from "react-router-dom";
 import "chartist/dist/scss/chartist.scss";
 import TopBar2 from "../../components/VerticalLayout/TopBar2";
 import axios from 'axios'
+import {BASE_URL} from '../../config'
 
 class Home extends Component {
     constructor(props) {
@@ -21,7 +22,7 @@ class Home extends Component {
     }
 
     componentDidMount() {
-        axios.get("http://localhost:5000/application/user/" + localStorage.getItem("userid"))
+        axios.get(BASE_URL + "/application/user/" + localStorage.getItem("userid"))
             .then(response => {
                 console.log("GET APPLICATIONS OF USER REPONSE IS: ", response.data)
                 if (response.status === 200) {

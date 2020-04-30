@@ -15,6 +15,7 @@ import { Link, Redirect } from "react-router-dom";
 // import images
 import logoSm from "../../assets/images/logo-sm.png";
 import axios from 'axios'
+import {BASE_URL} from '../../config'
 
 class Register extends Component {
   constructor(props) {
@@ -37,7 +38,7 @@ class Register extends Component {
         password: values.password,
         name:values.name
       }
-      axios.post("http://localhost:5000/register", data)
+      axios.post(BASE_URL + "/register", data)
         .then(response => {
           console.log("Register API response: ", response.data)
           if (response.status === 200) {

@@ -3,6 +3,7 @@ import axios from 'axios'
 import {Redirect} from 'react-router'
 
 import "../../App.css";
+import {BASE_URL} from '../../config'
 
 class ExistingConnection extends Component {
     constructor(props) {
@@ -41,7 +42,7 @@ class ExistingConnection extends Component {
             database:this.state.database
         }
 
-        axios.post("http://localhost:5000/launch",data)
+        axios.post(BASE_URL + "/launch",data)
             .then(response => {
                 console.log("Got the response",response.data);
                 if(response.status === 200){

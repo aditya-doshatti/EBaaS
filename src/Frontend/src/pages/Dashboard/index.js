@@ -25,6 +25,7 @@ import smimg2 from "../../assets/images/small/img-2.jpg";
 
 import "chartist/dist/scss/chartist.scss";
 import axios from 'axios'
+import {BASE_URL} from '../../config'
 
 class Dashboard extends Component {
   constructor(props) {
@@ -41,7 +42,7 @@ class Dashboard extends Component {
 
   componentDidMount(){
     console.log("Rendered the component")
-    axios.get("http://localhost:5000/application/"+localStorage.getItem("applicationid"))
+    axios.get(BASE_URL + "/application/"+localStorage.getItem("applicationid"))
       .then(response => {
         console.log("GET APPLICATION API RESPONSE IS: ",response.data)
         if(response.status === 200){
@@ -80,15 +81,15 @@ class Dashboard extends Component {
         database:localStorage.getItem("database"),
 
       }
-      axios.post("http://localhost:5000/launch",data)
+      axios.post(BASE_URL + "/launch",data)
         .then(response => {
           console.log("LAUNCH API RESPONSE IS: ",response.data)
           if(response.status === 200){
-            axios.post("http://localhost:5000/zip/"+this.state.name)
+            axios.post(BASE_URL + "/zip/"+this.state.name)
               .then(response => {
                 console.log("ZIP APPLICATION RESPONSE IS: ",response.data)
                 if(response.status === 200){
-                  axios.put("http://localhost:5000/application/"+localStorage.getItem("applicationid"))
+                  axios.put(BASE_URL + "/application/"+localStorage.getItem("applicationid"))
                     .then(response => {
                       if(response.status===200){
                         this.setState({
@@ -135,7 +136,7 @@ class Dashboard extends Component {
                     <Button
                       color="primary"
                       className="btn btn-primary btn-lg btn-block waves-effect waves-light mt-2"
-                      href={"http://localhost:5000/zip/"+this.state.name}
+                      href={BASE_URL + "/zip/"+this.state.name}
                     >Download</Button>    
     }
     var error = null

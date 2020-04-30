@@ -17,6 +17,8 @@ import logoSm from "../../assets/images/logo-sm.png";
 
 import axios from 'axios'
 
+import {BASE_URL} from '../../config'
+
 class Login extends Component {
   constructor(props) {
     super(props);
@@ -36,7 +38,7 @@ class Login extends Component {
       emailid:values.email,
       password:values.password
     }
-    axios.post("http://localhost:5000/login",data)
+    axios.post(BASE_URL + "/login",data)
       .then(response => {
         console.log("Login API response is: ",response.data)
         if(response.status===200){

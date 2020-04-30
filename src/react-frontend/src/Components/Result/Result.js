@@ -4,6 +4,7 @@ import { Redirect } from 'react-router'
 
 import "../../App.css";
 import Navbar from '../Navbar/Navbar'
+import {BASE_URL} from '../../config'
 
 class Result extends Component {
     constructor(props) {
@@ -18,7 +19,7 @@ class Result extends Component {
         var headers = new Headers();
         // axios.defaults.withCredentials = true;
 
-        axios.post("http://localhost:5000/zip?project=" + this.state.project)
+        axios.post(BASE_URL + "/zip?project=" + this.state.project)
             .then(response => {
                 console.log("Got the response", response.data);
                 if (response.status === 200) {
@@ -32,7 +33,7 @@ class Result extends Component {
     render() {
         let downloadButton = null;
         if (this.state.download) {
-            downloadButton = <a href={"http://localhost:5000/static/" + this.state.project + ".zip"} class="btn btn-primary mt-4 pr-4 pl-4">
+            downloadButton = <a href={BASE_URL + "/static/" + this.state.project + ".zip"} class="btn btn-primary mt-4 pr-4 pl-4">
                 Download
                             </a>
         }

@@ -18,7 +18,7 @@ import re
 from sqlalchemy import create_engine
 from tablib import Dataset
 import datetime
-
+import config as cfg
 
 
 
@@ -51,7 +51,7 @@ def hello():
 
 
 
-############################# USER OPERATIONS ################################################
+############################# user_info OPERATIONS ################################################
 
 
 @app.route('/login',methods=["POST"])
@@ -62,13 +62,13 @@ def userLogin():
     password = req_data['password']
     try:
         mydb = mysql.connector.connect(
-            host="localhost",
-            user="root",
-            passwd="root",
-            database="ebaas"
+            host=cfg.DATABASE_ADDRESS,
+            user=cfg.DATABASE_USERNAME,
+            passwd=cfg.DATABASE_PASSWORD,
+            database=cfg.DATABASE_NAME
             )
         cursor = mydb.cursor()
-        cursor.execute("SELECT * FROM USER WHERE emailid=\""+emailid+"\"" )
+        cursor.execute("SELECT * FROM user_info WHERE emailid=\""+emailid+"\"" )
         result = cursor.fetchall();
         if(len(result)==0):
             return make_response({"error":"Invalid Email"},
@@ -103,13 +103,13 @@ def userRegister():
 
     try:
         mydb = mysql.connector.connect(
-            host="localhost",
-            user="root",
-            passwd="root",
-            database="ebaas"
+            host=cfg.DATABASE_ADDRESS,
+            user=cfg.DATABASE_USERNAME,
+            passwd=cfg.DATABASE_PASSWORD,
+            database=cfg.DATABASE_NAME
             )
         cursor = mydb.cursor()
-        cursor.execute("SELECT COUNT(emailid) FROM USER WHERE emailid=\""+emailid+"\"")
+        cursor.execute("SELECT COUNT(emailid) FROM user_info WHERE emailid=\""+emailid+"\"")
         result = cursor.fetchone();
         print(result[0])
         if(result[0]):
@@ -117,7 +117,7 @@ def userRegister():
                          500)
         else:
             print("inside else")
-            cursor.execute("INSERT INTO USER(emailid,password,name) VALUES(\""+emailid+"\",\""+password+"\",\""+name+"\")")
+            cursor.execute("INSERT INTO user_info(emailid,password,name) VALUES(\""+emailid+"\",\""+password+"\",\""+name+"\")")
             mydb.commit()
             return make_response({"msg":"Registered Successfully"},
                          200)
@@ -133,10 +133,10 @@ def create_app():
     name = req_data["name"]
     try:
         mydb = mysql.connector.connect(
-            host="localhost",
-            user="root",
-            passwd="root",
-            database="ebaas"
+            host=cfg.DATABASE_ADDRESS,
+            user=cfg.DATABASE_USERNAME,
+            passwd=cfg.DATABASE_PASSWORD,
+            database=cfg.DATABASE_NAME
             )
         cursor = mydb.cursor()
         cursor.execute("INSERT INTO application(userid,name) VALUES(\""+userid+"\",\""+name+"\")")
@@ -152,10 +152,10 @@ def get_users_app(userid):
     resp_data = []
     try:
         mydb = mysql.connector.connect(
-            host="localhost",
-            user="root",
-            passwd="root",
-            database="ebaas"
+            host=cfg.DATABASE_ADDRESS,
+            user=cfg.DATABASE_USERNAME,
+            passwd=cfg.DATABASE_PASSWORD,
+            database=cfg.DATABASE_NAME
             )
         cursor = mydb.cursor()
         cursor.execute("SELECT * FROM application where userid="+userid)
@@ -180,10 +180,10 @@ def get_app(id):
     resp_data = {}
     try:
         mydb = mysql.connector.connect(
-            host="localhost",
-            user="root",
-            passwd="root",
-            database="ebaas"
+            host=cfg.DATABASE_ADDRESS,
+            user=cfg.DATABASE_USERNAME,
+            passwd=cfg.DATABASE_PASSWORD,
+            database=cfg.DATABASE_NAME
             )
         cursor = mydb.cursor()
         cursor.execute("SELECT * FROM application where id="+id)
@@ -208,10 +208,10 @@ def edit_app(id):
     resp_data = {}
     try:
         mydb = mysql.connector.connect(
-            host="localhost",
-            user="root",
-            passwd="root",
-            database="ebaas",
+            host=cfg.DATABASE_ADDRESS,
+            user=cfg.DATABASE_USERNAME,
+            passwd=cfg.DATABASE_PASSWORD,
+            database=cfg.DATABASE_NAME,
             autocommit=True
             )
         cursor = mydb.cursor()
@@ -296,10 +296,10 @@ def save_database_details():
     dbname=data["database"]
     try:
         mydb = mysql.connector.connect(
-            host="localhost",
-            user="root",
-            passwd="root",
-            database="ebaas"
+            host=cfg.DATABASE_ADDRESS,
+            user=cfg.DATABASE_USERNAME,
+            passwd=cfg.DATABASE_PASSWORD,
+            database=cfg.DATABASE_NAME
             )
         cursor = mydb.cursor()
         print(type(userid))
@@ -326,10 +326,10 @@ def get_database_details(id):
     resp_data = {}
     try:
         mydb = mysql.connector.connect(
-            host="localhost",
-            user="root",
-            passwd="root",
-            database="ebaas"
+            host=cfg.DATABASE_ADDRESS,
+            user=cfg.DATABASE_USERNAME,
+            passwd=cfg.DATABASE_PASSWORD,
+            database=cfg.DATABASE_NAME
             )
         cursor = mydb.cursor()
         cursor.execute("SELECT * FROM user_databases where id="+id)
@@ -354,10 +354,10 @@ def get_user_databases(userid):
     resp_data = []
     try:
         mydb = mysql.connector.connect(
-            host="localhost",
-            user="root",
-            passwd="root",
-            database="ebaas"
+            host=cfg.DATABASE_ADDRESS,
+            user=cfg.DATABASE_USERNAME,
+            passwd=cfg.DATABASE_PASSWORD,
+            database=cfg.DATABASE_NAME
             )
         cursor = mydb.cursor()
         cursor.execute("SELECT * FROM user_databases where userid="+userid)
@@ -385,10 +385,10 @@ def get_application_databases(applicationid):
     resp_data = []
     try:
         mydb = mysql.connector.connect(
-            host="localhost",
-            user="root",
-            passwd="root",
-            database="ebaas"
+            host=cfg.DATABASE_ADDRESS,
+            user=cfg.DATABASE_USERNAME,
+            passwd=cfg.DATABASE_PASSWORD,
+            database=cfg.DATABASE_NAME
             )
         cursor = mydb.cursor()
         cursor.execute("SELECT * FROM user_databases where applicationid="+applicationid)

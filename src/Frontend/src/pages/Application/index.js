@@ -5,7 +5,7 @@ import { AvForm, AvField } from "availity-reactstrap-validation";
 import { Link, Redirect } from "react-router-dom";
 // Custom Scrollbar
 import SimpleBar from "simplebar-react";
-
+import {BASE_URL} from '../../config'
 
 // import images
 import servicesIcon1 from "../../assets/images/services-icon/01.png";
@@ -41,7 +41,7 @@ class Application extends Component {
       userid:localStorage.getItem("userid"),
       name:values.name
     }
-    axios.post("http://localhost:5000/application",data)
+    axios.post(BASE_URL + "/application",data)
       .then(response => {
         console.log("CREATE NEW APPLICATION API RESPONSE IS: ",response.data)
         if(response.status===200){

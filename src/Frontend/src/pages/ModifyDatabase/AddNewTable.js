@@ -21,6 +21,7 @@ import { AvForm, AvField } from "availity-reactstrap-validation";
 
 import "chartist/dist/scss/chartist.scss";
 import axios from "axios";
+import {BASE_URL} from '../../config'
 
 class Dashboard extends Component {
   constructor(props) {
@@ -99,7 +100,7 @@ class Dashboard extends Component {
         tables : this.state.tables
     }
     
-    axios.post("http://localhost:5000/createTable",data)
+    axios.post(BASE_URL + "/createTable",data)
         .then(response => {
             console.log("Got the response",response.data);
             if(response.status === 200){

@@ -18,6 +18,7 @@ import "chartist/dist/scss/chartist.scss";
 import Swal from "sweetalert2";
 import axios from 'axios'
 import { AvForm, AvField } from "availity-reactstrap-validation";
+import {BASE_URL} from '../../config'
 
 class Dashboard extends Component {
   constructor(props) {
@@ -53,7 +54,7 @@ class Dashboard extends Component {
         database: localStorage.getItem("database"),
       }
 
-      axios.post("http://localhost:5000/getInformation", data)
+      axios.post(BASE_URL + "/getInformation", data)
         .then(response => {
           console.log("Got the response", response.data);
           if (response.status === 200) {
@@ -141,7 +142,7 @@ class Dashboard extends Component {
         columns : this.state.columns
     }
     
-    axios.post("http://localhost:5000/addColumn",data)
+    axios.post(BASE_URL + "/addColumn",data)
         .then(response => {
             console.log("Got the response",response.data);
             if(response.status === 200){

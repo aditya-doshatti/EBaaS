@@ -42,28 +42,27 @@ Setup and Usage : For making EBaaS run on a local machine:
 
 - Sequelize: To allow our backend to create models from database entities.
 
-	```
-	npm install -g sequelize-auto  
-	npm install -g mysql
-	```  
+		- npm install -g sequelize-auto  
+		- npm install -g mysql
+	 
 	
 
 - Express-generator: To allow our backend to create an express structure to provide backend.
 
-	```
-	npm install -g express-generator
-	```  
+	
+		- npm install -g express-generator
+	
 	
 	
 - Backend Database: Database that helps our backend do necessary operations
 
-	```
-	- Navigate to /ref folder.   
-	- Download the ebaas.sql file to get our database schema.  
-	- In your database console:  
-		create database ebaas;  
-	- Import ebaas.sql file in the database created above  
-	```  
+	
+		- Navigate to /ref folder.   
+		- Download the ebaas.sql file to get our database schema.  
+		- In your database console:  
+			create database ebaas;  
+		- Import ebaas.sql file in the database created above  
+	
 	
 	
 	
@@ -72,20 +71,20 @@ Setup and Usage : For making EBaaS run on a local machine:
 	
 - Start the backend server
 
-	```
-	- Navigate to /src/app folder  
-	- Install required libraries using pip install  
-	- run python ./api.py  
-	```  
+	
+		- Navigate to /src/app folder  
+		- Install required libraries using pip install  
+		- run python ./api.py  
+	 
 	
 	
 - Start the frontend server
 
-	```
-	- Navigate to /src/Frontend folder  
-	- run npm install (downloads the dependencies)  
-	- run npm start  
-	```  
+	
+		- Navigate to /src/Frontend folder  
+		- run npm install (downloads the dependencies)  
+		- run npm start  
+
 	
 	
 	
@@ -93,12 +92,12 @@ Setup and Usage : For making EBaaS run on a local machine:
 
 - Running the generated backend code:
 	
-	```
-	- Unzip the zipped file downloaded.  
-	- Navigate to /static/YOUR_APPLICATION_NAME folder  
-	- run npm install  
-	- run node index.js  
-	```  
+
+		- Unzip the zipped file downloaded.  
+		- Navigate to /static/YOUR_APPLICATION_NAME folder  
+		- run npm install  
+		- run node index.js  
+	  
 	
 	
 	
@@ -124,40 +123,40 @@ Features
 	EBaaS allows users to manipulate with the database. Compared to other backend generator/providers, EBaaS doesn't just allow user to connect to an exisiting database but also allows users to create a new database in the application itself. Users have an Excel or SQL Import file? EBaaS allows that as well. Summarizing  
 	
 	
-	```
-	- Connect to an existing database and modify it further before launching the backend  
-	- Create a whole new database and add tables, columns and relationships  
-	- Create a new database from an Excel file with multiple sheets.  
-	- Create a new database from a SQL file.  
-	```
+		
+		- Connect to an existing database and modify it further before launching the backend  
+		- Create a whole new database and add tables, columns and relationships  
+		- Create a new database from an Excel file with multiple sheets.  
+		- Create a new database from a SQL file.  
+	
 	
 	
 - **API Code- On Hand**
 	Compared to other backend generators, EBaaS does not start a backend as a service which can be utilized, but instead provides a well-structured code that can be downloaded and used as a base for further advancements. Summarizing
 	
-	```
-	- Not a server, but actually a code.  
-	- Code that follows the most trusted frameworks like Express and NodeJS.  
-	- Code that follows the best practices from folder structure to modularity within the code.  
-	```
+	
+		- Not a server, but actually a code.  
+		- Code that follows the most trusted frameworks like Express and NodeJS.  
+		- Code that follows the best practices from folder structure to modularity within the code.  
+	
 	
 	
 - **Ease Of Use**
 	EBaaS is pretty easy to setup and use and does not make user indulge in any complex technologies for generating the backend. Compared to other tools, EBaaS allows user to interact with a UI rather than command line. Summarizing
 	
-	```
-	- Easy Setup and Usage.  
-	- UI rather than command-line interface, allowing users to navigate through the steps easily.  
-	```
+	
+		- Easy Setup and Usage.  
+		- UI rather than command-line interface, allowing users to navigate through the steps easily.  
+	
 	
 	
 - **Security**
 	EBaaS works on the user databases but never actually stores any of the data regarding that database, making it the most-secure way of providing backend. Summarizing
 	   
-	```
-	- Database data, schema and details are never stored on the backend side.   
-	- Only the database name and its connection is stored, which can be modified once created by changing the credentials.  
-	```
+	
+		- Database data, schema and details are never stored on the backend side.   
+		- Only the database name and its connection is stored, which can be modified once created by changing the credentials.  
+	
 	   
 	
 Documentation and Videos
@@ -185,13 +184,14 @@ What's coming next?
 
 Team
 - 
-- Mentor:  
-**Gokay Saldamli** - San Jose State University, Assistant Professor, Computer Engineering
 
 **Aditya Doshatti** - San Jose State University, MSSE Fall 2018.  
 **Darshil Kapadia** - San Jose State University, MSSE Fall 2018.  
 **Devashish Nyati** - San Jose State University, MSSE Fall 2018.  
-**Maulin Bodiwala** - San Jose State University, MSCE Fall 2018.  
+**Maulin Bodiwala** - San Jose State University, MSCE Fall 2018.   
+
+- Mentor:  
+**Gokay Saldamli** - San Jose State University, Assistant Professor, Computer Engineering
 
 
 ***Please watch/star this repo for keeping a check on updates - and for encouraging us further.***

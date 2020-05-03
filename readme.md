@@ -5,10 +5,6 @@
 Why do we need this in today's world?  
 -
 
-  
-
-![Current Situtation](https://bitbucket.org/devashish_nyati/2020s_ebaas/src/master/ref/CurrentSituation.PNG)
-
 
 Today, most applications need a backend to bring applications features alive. Most applications today are using REpresentational State Transfer(REST) architechture to develop their APIs. RESTful API, for the majority of the part, are nothing but manipulation of database entities using Create, Retreive, Update and Delete(CRUD) operations. These CRUD operations are basically the database queries that is handled effectively by these APIs.
 
@@ -166,10 +162,10 @@ Features
 	
 Documentation and Videos
 -
-- Demonstration Video: [Link](https://bitbucket.org/devashish_nyati/2020s_ebaas/src/master/doc/8.%20Project%20Demonstration%20Video/EBaaS%20Demo.mp4)     
-- Project Presentation: [Link](https://bitbucket.org/devashish_nyati/2020s_ebaas/src/master/doc/9.%20Project%20Presentation/EBaaS%20Presentation.pptx)  
-- Paper: [Link](https://bitbucket.org/devashish_nyati/2020s_ebaas/src/master/doc/5.%20Research%20Paper%20(Project%20Report)/EBaaS.pdf)     
-- Work-Flows: [Model_Generation](https://bitbucket.org/devashish_nyati/2020s_ebaas/src/master/ref/Models2.PNG) ,  [Code_Generation](https://bitbucket.org/devashish_nyati/2020s_ebaas/src/master/ref/Code2.PNG)     
+- Demonstration Video: [Link](https://bitbucket.org/devashish_nyati/2020s_ebaas/raw/master/doc/8.%20Project%20Demonstration%20Video/EBaaS%20Demo.mp4)     
+- Project Presentation: [Link](https://bitbucket.org/devashish_nyati/2020s_ebaas/raw/master/doc/9.%20Project%20Presentation/EBaaS%20Presentation.pptx)  
+- Paper: [Link](https://bitbucket.org/devashish_nyati/2020s_ebaas/raw/master/doc/5.%20Research%20Paper%20(Project%20Report)/EBaaS.pdf)     
+- Work-Flows: [Model_Generation](https://bitbucket.org/devashish_nyati/2020s_ebaas/raw/master/ref/Models2.PNG) ,  [Code_Generation](https://bitbucket.org/devashish_nyati/2020s_ebaas/raw/master/ref/Code2.PNG)     
 
 When to use?
 -

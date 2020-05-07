@@ -1,13 +1,20 @@
-FROM node:9-slim
+FROM nikolaik/python-nodejs
 
-RUN apt-get update || : && apt-get install -y \
-    python3.4 \
-    python3-pip
-
+RUN mkdir /app
+ADD . /app/
 WORKDIR /app
-COPY ./app /app
-RUN pip3 install mysql-connector-python
-RUN python3 prepareApifiles.py
+RUN pip install mysql-connector-python
+RUN pip install flask
+RUN pip install flask_cors
+RUN pip install pandas
+RUN pip install bcrypt
+RUN pip install requests
+RUN pip install sqlalchemy
+RUN pip install tablib
+RUN npm install -g sequelize-auto
+RUN npm install -g mysql
+RUN npm install -g express-generator
 RUN npm install
-EXPOSE 3000
-CMD ["node", "index.js"]
+EXPOSE 5000
+#RUN chmod +x start.sh
+CMD ["python", "api.py"]

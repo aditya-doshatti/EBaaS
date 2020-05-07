@@ -99,7 +99,54 @@ Setup and Usage : For making EBaaS run on a local machine:
 		- run node index.js  
 	  
 	
+
+Setup - Using Docker  
+-
+
+#### Create a Docker Network  
+	docker network create ebaas-network
+#### Database Setup  
+- Start a mysql docker container with "root" as the password for the root user.  
+				
+		- docker run -d --name mysql --network ebaas-network -td -p 3306:3306 -e MYSQL_ROOT_PASSWORD=root mysql:5.7   
+		- docker ps  
+		
+
+- Connect to the mysql docker bash.  
+		
+		- docker exec -it mysql bash  
+		
+
+- Start mysql console.  
+
+		- mysql --host=localhost --user=root --password=root  
+		
+
+- Create the database and required tables.  
+
+		- create database ebaas;  
+		- use ebaas;  
+		- CREATE  TABLE  application ( id bigint(20) NOT  NULL, userid bigint(20) NOT  NULL, name varchar(255) NOT  NULL, description varchar(255) DEFAULT NULL, server varchar(255) DEFAULT NULL, launched tinyint(1) NOT  NULL DEFAULT 0, created_on timestamp  NOT  NULL DEFAULT current_timestamp(), launched_on timestamp  NULL DEFAULT NULL)  
+		- CREATE  TABLE  user_info (id bigint(20) NOT  NULL, emailid varchar(255) NOT  NULL, password varchar(255) NOT  NULL, name varchar(255) DEFAULT NULL, country varchar(255) DEFAULT NULL, organisation varchar(255) DEFAULT NULL)   
+		- CREATE  TABLE  user_databases (id bigint(11) NOT  NULL, userid bigint(20) NOT  NULL, applicationid bigint(20) NOT  NULL, connectionname varchar(255) NOT  NULL, hostname varchar(255) NOT  NULL, username varchar(255) NOT  NULL, password varchar(255) NOT  NULL, dbname varchar(255) NOT  NULL)  
+		- ALTER  TABLE application ADD PRIMARY  KEY (`id`), ADD UNIQUE KEY  userid (userid,name);  
+		- ALTER  TABLE  user_info ADD PRIMARY  KEY (id), ADD UNIQUE KEY  emailid (emailid);
+		- ALTER  TABLE  user_databases ADD PRIMARY  KEY (id), ADD UNIQUE KEY userid(userid,applicationid,hostname,username,password,dbname), ADD UNIQUE KEY  userid_2 (userid,connectionname), ADD KEY  application_database (applicationid);  
+		- ALTER  TABLE  user_info MODIFY id bigint(20) NOT  NULL AUTO_INCREMENT, AUTO_INCREMENT=9;  
+		- ALTER  TABLE  user_databases MODIFY  id  bigint(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;  
+		- ALTER  TABLE application ADD CONSTRAINT  userId FOREIGN KEY (userid) REFERENCES  user_info (id) ON DELETE CASCADE ON UPDATE CASCADE;  
+		- ALTER  TABLE user_databases ADD CONSTRAINT  application_database FOREIGN KEY (applicationid) REFERENCES  application (id) ON DELETE CASCADE  ON UPDATE CASCADE, ADD CONSTRAINT  user_database FOREIGN KEY (userid) REFERENCES  user_info (id) ON DELETE CASCADE ON  UPDATE CASCADE;   
 	
+	
+#### Backend Setup    
+	
+	- docker run -td --name ebaas-backend --network ebaas-network -p 5000:5000 darshilpk3/ebaas:backend  
+
+#### Frontend Setup    
+	
+	- docker run -td --name ebaas-frontend --network ebaas-network -p 3000:3000 darshilpk3/ebaas:frontend   
+
+
 	
 APIs Generated
 - 
@@ -111,9 +158,12 @@ APIs Generated
 |/tableName/:id|GET|Get the information based on ID from a particular table.|
 |/tableName/:id|PUT|Edits the information based on ID and the request body from a particular table.|
 |/tableName/:id|DELETE|Deletes a particular record based on ID from a particular table.|
-|/tableName/unique<br>KeyName/:unique_key|GET|Get the information based on unique key present in a particular table.|
-|/tableName/unique<br>KeyName/:unique_key|PUT|Edits the information of a record based on unique key present in a particular table.|
-|/tableName/unique<br>KeyName/:unique_key|DELETE|Deletes the record based on unique key present in a particular table.|
+|/tableName/unique  
+KeyName/:unique_key|GET|Get the information based on unique key present in a particular table.|
+|/tableName/unique  
+KeyName/:unique_key|PUT|Edits the information of a record based on unique key present in a particular table.|
+|/tableName/unique  
+KeyName/:unique_key|DELETE|Deletes the record based on unique key present in a particular table.|
 |/parentTable/:id/childTable/|GET|Get all the records of the child table that has relation with the parent table on the ID specified.|
 |/parentTable/:id/childTable/|POST|Create a new record in the child table that relates to parent table based on the specified ID. |
 

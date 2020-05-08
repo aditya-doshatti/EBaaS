@@ -1,0 +1,25 @@
+sudo yum update -y
+sudo yum install git -y
+git clone https://adityadoshatti@bitbucket.org/devashish_nyati/2020s_ebaas.git
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
+. ~/.nvm/nvm.sh
+nvm install node
+npm install
+npm start
+npm rebuild node-sass
+sudo yum install -y gcc-c++
+npm rebuild node-sass
+npm start
+npm install firebase 
+sudo yum install python3
+sudo pip3 install flask
+sudo pip3 install mysql-connector-python
+sudo pip3 install requests
+sudo pip3 install bcrypt
+sudo pip3 install flask_cors
+sudo pip3 install pandas
+sudo pip3 install sqlalchemy
+sudo pip3 install tablib
+
+
+
